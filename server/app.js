@@ -3,9 +3,10 @@ const app = express();
 require('dotenv').config();
 const pool = require('./db/pool');
 const authRoutes = require('./routes/auth');
+const bodyParser = require('body-parser');
 
 // const logger = require('./utils/logger');
-
+app.use(bodyParser.json());
 app.get('/', async (req, res, next) => {
 	const result = await pool.execute('select * from northwind.customers');
 	const [ first ] = result;
