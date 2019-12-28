@@ -5,5 +5,10 @@ function getUserExistQuery() {
 function getUserInsertionQuery() {
 	return 'INSERT INTO `vacations`.`users` (`firstname`, `lastname`, `email`, `password`) VALUES (?,?,?,?)';
 }
-
-module.exports = { getUserExistQuery, getUserInsertionQuery };
+function getUserPasswordExistQuery() {
+	return 'SELECT * FROM `vacations`.`users` where email = ? and password = ?';
+}
+function gethashedPasswordQuery() {
+	return 'SELECT password FROM `vacations`.`users` where email = ? ';
+}
+module.exports = { getUserExistQuery, getUserInsertionQuery, getUserPasswordExistQuery, gethashedPasswordQuery };

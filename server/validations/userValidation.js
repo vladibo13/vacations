@@ -7,10 +7,21 @@ const userSchemaRegistration = Joi.object({
 	firstname: Joi.string().required()
 });
 
+const userSchemaLogin = Joi.object({
+	email: Joi.string().required(),
+	password: Joi.string().required()
+});
+
 function registerValidation(req, res, next) {
 	const { error } = userSchemaRegistration.validate(req.body);
-	if (error) return res.json({ msg: error.details[0].message });
+	if (error) return res.status(400).json({ error: error.details[0].message });
 	next();
 }
 
-module.exports = { registerValidation };
+function loginValidation(req, res, next) {
+	const { error } = userSchemaLogin.validate(req.body);
+	if (error) return res.status(400).json({ error: error.details[0].message });
+	next();
+}
+
+module.exports = { registerValidation, loginValidation };
