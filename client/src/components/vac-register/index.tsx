@@ -1,7 +1,10 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../../redux/actions/authAction';
 import useCustomForm from '../../hooks/useCustomHook';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
@@ -10,6 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useHistory, Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -34,15 +38,19 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const VacRegister: React.FC = () => {
-	const initialState = { firstname: '', lastName: '', email: '', password: '' };
+const VacRegister: React.FC = (props: any) => {
+	const initialState = { firstname: '', lastname: '', email: '', password: '' };
 	const [ formData, setFormData ] = useCustomForm(initialState);
+	const msg = useSelector((state: any) => state.auth.msg);
+	const dispatch = useDispatch();
 	const classes = useStyles();
-	const handleRegister = () => {
-		console.log(formData);
+
+	const handleRegister = async () => {
+		await dispatch(registerUser(formData));
 	};
 	return (
 		<Container className={classes.root} component="main" maxWidth="xs">
+			{msg === 'redirect' && <Redirect to="/login" />}
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
@@ -74,7 +82,7 @@ const VacRegister: React.FC = () => {
 								fullWidth
 								id="lastname"
 								label="Last Name"
-								name="lastName"
+								name="lastname"
 								autoComplete="lname"
 							/>
 						</Grid>
@@ -122,6 +130,8 @@ const VacRegister: React.FC = () => {
 						</Grid>
 					</Grid>
 				</form>
+
+				<Typography color="error">{msg}</Typography>
 			</div>
 		</Container>
 	);

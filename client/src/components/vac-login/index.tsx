@@ -1,5 +1,7 @@
 import React from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../redux/actions/authAction';
+import useCustomForm from '../../hooks/useCustomHook';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -40,10 +43,25 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const VacLogin: React.FC = () => {
+const VacLogin: React.FC = (props: any) => {
 	const classes = useStyles();
+	const initialState = { email: '', password: '' };
+	const [ formData, setFormData ] = useCustomForm(initialState);
+	const msg = useSelector((state: any) => state.auth.msg);
+	const token = useSelector((state: any) => state.auth.token);
+	const dispatch = useDispatch();
+	const handleLogIn = async () => {
+		await dispatch(loginUser(formData));
+		console.log(token);
+		console.log(msg);
+		// if (token && msg === 'redirect') {
+		// 	props.history.push('/');
+		// 	return;
+		// }
+	};
 	return (
 		<Grid container component="main" className={classes.root}>
+			{msg === 'redirect' && token && <Redirect to="/" />}
 			<Grid item xs={false} sm={4} md={7} className={classes.image} />
 			<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
 				<div className={classes.paper}>
@@ -64,6 +82,7 @@ const VacLogin: React.FC = () => {
 							name="email"
 							autoComplete="email"
 							autoFocus
+							onChange={setFormData}
 						/>
 						<TextField
 							variant="outlined"
@@ -75,9 +94,17 @@ const VacLogin: React.FC = () => {
 							type="password"
 							id="password"
 							autoComplete="current-password"
+							onChange={setFormData}
 						/>
 
-						<Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+						<Button
+							onClick={handleLogIn}
+							type="button"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={classes.submit}
+						>
 							Sign In
 						</Button>
 						<Grid container>
