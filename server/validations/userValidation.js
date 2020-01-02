@@ -14,13 +14,13 @@ const userSchemaLogin = Joi.object({
 
 function registerValidation(req, res, next) {
 	const { error } = userSchemaRegistration.validate(req.body);
-	if (error) return res.status(400).json({ error: error.details[0].message });
+	if (error) return res.status(400).json({ msg: error.details[0].message });
 	next();
 }
 
 function loginValidation(req, res, next) {
 	const { error } = userSchemaLogin.validate(req.body);
-	if (error) return res.status(400).json({ error: error.details[0].message });
+	if (error) return res.status(400).json({ msg: error.details[0].message });
 	next();
 }
 

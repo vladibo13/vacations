@@ -8,18 +8,19 @@ const { getJwt } = require('../utils/createJWT');
 
 router.use('/register', registerValidation);
 router.post('/register', async (req, res, next) => {
+	console.log(req.body);
 	const { firstname, lastname, email, password } = req.body;
 	if (!firstname || !lastname || !email || !password)
-		return res.status(400).json({ error: 'all fields are mandatory' });
+		return res.status(400).json({ msg: 'all fields are mandatory' });
 	try {
-		//check if user exisat
+		//check if user exist
 		const user = await isUserExist(email);
-		if (user) return res.json({ error: 'user already exist' });
+		if (user) return res.json({ msg: 'user already exist' });
 		//hash the password
 		const hashedPassword = await hashPassword(password);
 		//save to db
 		const insertId = await saveUser({ ...req.body, password: hashedPassword });
-		if (insertId) return res.status(201).json({ msg: 'user saved!', insertId });
+		if (insertId) return res.status(201).json({ msg: 'redirect', insertId, redirect: true });
 	} catch (e) {
 		return res.status(500).json({ error: e });
 	}
@@ -40,7 +41,7 @@ router.post('/login', async (req, res, next) => {
 		if (!passwordCheck) return res.status(400).json({ msg: 'password incorrect' });
 		//create token
 		const jwtToken = await getJwt({ ...user, password: null });
-		res.json({ msg: 'hello from login', token: jwtToken });
+		res.json({ msg: 'redirect', token: jwtToken });
 	} catch (e) {
 		res.status(400).json({ error: 'bad request' });
 	}
@@ -49,6 +50,7 @@ router.post('/login', async (req, res, next) => {
 router.get('/verify', async (req, res, next) => {
 	try {
 		const { authorization } = req.headers;
+		console.log(authorization);
 		jwt.verify(authorization, process.env.SECRET, (err, decoded) => {
 			if (err) return res.json({ status: false });
 			const { id, firstname, lastname, email } = decoded;

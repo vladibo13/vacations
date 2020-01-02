@@ -22,3 +22,14 @@ export const loginUserService = async (user: any) => {
 		return { msg: 'error' };
 	}
 };
+
+export const verifyUserService = async () => {
+	try {
+		console.log('user from service =  ');
+		const { data } = await mainAxios.get('/auth/verify');
+		console.log('data from service ', data);
+		return data;
+	} catch (ex) {
+		return { msg: 'error' };
+	}
+};

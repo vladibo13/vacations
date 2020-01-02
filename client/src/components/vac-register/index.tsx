@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { registerUser } from '../../redux/actions/authAction';
 import useCustomForm from '../../hooks/useCustomHook';
 import Avatar from '@material-ui/core/Avatar';
@@ -41,16 +41,30 @@ const useStyles = makeStyles((theme) => ({
 const VacRegister: React.FC = (props: any) => {
 	const initialState = { firstname: '', lastname: '', email: '', password: '' };
 	const [ formData, setFormData ] = useCustomForm(initialState);
-	const msg = useSelector((state: any) => state.auth.msg);
+	// const msg = useSelector((state: any) => state.auth.msg);
+	// const isRegistred = useSelector((state: any) => state.auth.isRegistred);
+	const { msg, isRegistred } = useSelector((state: any) => ({
+		msg: state.auth.msg,
+		isRegistred: state.auth.isRegistred
+	}));
 	const dispatch = useDispatch();
 	const classes = useStyles();
 
 	const handleRegister = async () => {
-		await dispatch(registerUser(formData));
+		console.log(props);
+		try {
+			await dispatch(registerUser(formData));
+			console.log(msg === 'redirect');
+			// console.log('isRegistred = ', isRegistred);
+			// if (msg === 'redirect') props.history.push('/login');
+		} catch (ex) {
+			console.log('returning...');
+			return;
+		}
 	};
 	return (
 		<Container className={classes.root} component="main" maxWidth="xs">
-			{msg === 'redirect' && <Redirect to="/login" />}
+			{isRegistred && msg === 'redirect' && <Redirect to="/login" />}
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
@@ -112,6 +126,7 @@ const VacRegister: React.FC = (props: any) => {
 							/>
 						</Grid>
 					</Grid>
+					<Typography color="error">{msg}</Typography>
 					<Button
 						onClick={handleRegister}
 						type="button"
@@ -130,8 +145,6 @@ const VacRegister: React.FC = (props: any) => {
 						</Grid>
 					</Grid>
 				</form>
-
-				<Typography color="error">{msg}</Typography>
 			</div>
 		</Container>
 	);

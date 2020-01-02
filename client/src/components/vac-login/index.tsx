@@ -44,26 +44,47 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const VacLogin: React.FC = (props: any) => {
-	const classes = useStyles();
 	const initialState = { email: '', password: '' };
+	//hooks
+	const classes = useStyles();
 	const [ formData, setFormData ] = useCustomForm(initialState);
+	//redux state
 	const msg = useSelector((state: any) => state.auth.msg);
-	const token = useSelector((state: any) => state.auth.token);
+	// const token = useSelector((state: any) => state.auth.token);
+	const token = localStorage.getItem('token');
+	//redux dispatch
 	const dispatch = useDispatch();
 	const handleLogIn = async () => {
-		await dispatch(loginUser(formData));
-		console.log(token);
-		console.log(msg);
+		try {
+			await dispatch(loginUser(formData));
+			console.log(msg);
+			// if (msg === 'redirect') {
+			// 	props.history.push('/');
+			// 	return;
+			// }
+		} catch (ex) {
+			console.log(ex);
+		}
+		// if (localStorage.getItem('token')) {
+		// 	return <Redirect to="/" />;
+		// }
+		// console.log(result);
+
+		// console.log(token);
+		// console.log(msg);
 		// if (token && msg === 'redirect') {
 		// 	props.history.push('/');
 		// 	return;
 		// }
 	};
+	// console.log(token);
+
 	return (
 		<Grid container component="main" className={classes.root}>
 			{msg === 'redirect' && token && <Redirect to="/" />}
-			<Grid item xs={false} sm={4} md={7} className={classes.image} />
-			<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+			{/* {isAuthClient()} */}
+			<Grid item xs={false} sm={false} md={7} className={classes.image} />
+			<Grid item xs={12} sm={12} md={5} component={Paper} elevation={6} square>
 				<div className={classes.paper}>
 					<Avatar className={classes.avatar}>
 						<LockOutlinedIcon />
@@ -96,7 +117,7 @@ const VacLogin: React.FC = (props: any) => {
 							autoComplete="current-password"
 							onChange={setFormData}
 						/>
-
+						<Typography color="error">{msg}</Typography>
 						<Button
 							onClick={handleLogIn}
 							type="button"
