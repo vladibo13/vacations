@@ -11,6 +11,6 @@ import React from 'react';
 
 export const AppRoutes = (props: any) => {
 	const { routes } = props;
-	const result = routes.map((route: any) => <Route {...route} />);
+	const result = routes.map((route: any, i: number) => <Route key={i} {...route} />);
 	return result;
 };

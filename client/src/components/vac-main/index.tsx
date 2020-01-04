@@ -64,71 +64,13 @@ const VacMain: React.FC = (props: any) => {
 	const vacations = useSelector((state: any) => state.vacation.vacations);
 	const status = useSelector((state: any) => state.auth.status);
 	const dispatch = useDispatch();
-	const [ state, setState ] = React.useState({
-		checkedA: true,
-		checkedB: true
-	});
-	const handleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ ...state, [name]: event.target.checked });
-	};
 
 	console.log(vacations);
 	if (vacations.length === 0) return <p>Loading...</p>;
 	return (
 		<Container className={classes.cardGrid} maxWidth="lg">
-			<VacMainItem />
-			<Switch
-				checked={state.checkedA}
-				onChange={handleChange('checkedA')}
-				value="checkedA"
-				inputProps={{ 'aria-label': 'secondary checkbox' }}
-			/>
-			<Switch
-				checked={state.checkedB}
-				onChange={handleChange('checkedB')}
-				value="checkedB"
-				color="primary"
-				inputProps={{ 'aria-label': 'primary checkbox' }}
-			/>
 			<Grid container spacing={4}>
-				{vacations.map((vac: any) => {
-					return (
-						<Grid item key={vac.id} xs={12} sm={6} md={4}>
-							<Card className={classes.card}>
-								<CardHeader
-									avatar={
-										<Avatar aria-label="recipe" className={classes.avatar}>
-											R
-										</Avatar>
-									}
-									action={
-										<IconButton aria-label="settings">
-											<MoreVertIcon />
-										</IconButton>
-									}
-									title={vac.destination}
-									subheader={`${vac.from_date} - ${vac.to_date}`}
-								/>
-								<CardMedia className={classes.media} image={vac.picture} title="Paella dish" />
-								<CardContent>
-									<Typography variant="body2" color="textSecondary" component="p">
-										{vac.description}
-									</Typography>
-								</CardContent>
-								<CardActions disableSpacing>
-									<IconButton aria-label="add to favorites">
-										<FavoriteIcon />
-										{vac.all_followers}
-									</IconButton>
-									<IconButton aria-label="share">
-										<ShareIcon />
-										{vac.cost}$
-									</IconButton>
-								</CardActions>
-							</Card>
-						</Grid>
-					);
-				})}
+				{vacations.map((vac: any) => <VacMainItem key={vac.id} {...vac} />)}
 			</Grid>
 		</Container>
 	);

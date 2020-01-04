@@ -4,6 +4,7 @@ require('dotenv').config();
 const pool = require('./db/pool');
 const authRoutes = require('./routes/auth');
 const vactionRoutes = require('./routes/vacation');
+const chartRoutes = require('./routes/chart');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 app.use(cors());
@@ -18,6 +19,7 @@ app.get('/', async (req, res, next) => {
 
 app.use('/auth', authRoutes);
 app.use('/vacations', vactionRoutes);
+app.use('/chart', chartRoutes);
 
 app.listen(process.env.PORT, () => {
 	console.log(`server running on port ${process.env.PORT}...`);
