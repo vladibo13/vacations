@@ -51,6 +51,11 @@ const VacNavbar: React.FC = () => {
 							Admin
 						</Link>
 					</Button>
+					<Button color="inherit">
+						<Link style={{ color: 'white' }} to="/main">
+							Main
+						</Link>
+					</Button>
 					<Button onClick={redirectToRegister} color="inherit">
 						Log Out
 					</Button>

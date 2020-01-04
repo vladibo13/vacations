@@ -6,7 +6,7 @@ const initialState = {
 	user: null,
 	isRegistred: null,
 	error: '',
-	status: 'loading',
+	status: false,
 	msg: ''
 };
 
@@ -27,10 +27,12 @@ export default function authReducer(state = initialState, action: any) {
 		}
 
 		case Actions.AUTH_ERROR: {
+			console.log('from error reducer payload ', action.payload);
 			return {
 				...state,
 				msg: '',
-				isRegistred: false
+				isRegistred: false,
+				error: action.payload
 			};
 		}
 
@@ -41,7 +43,8 @@ export default function authReducer(state = initialState, action: any) {
 				...state,
 				isRegistred: true,
 				isLoading: false,
-				msg: action.payload.msg
+				msg: action.payload.msg,
+				error: ''
 			};
 		}
 
@@ -51,7 +54,8 @@ export default function authReducer(state = initialState, action: any) {
 				...state,
 				isAuthenticated: true,
 				isLoading: false,
-				msg: action.payload.msg
+				msg: action.payload.msg,
+				error: ''
 			};
 		}
 
@@ -60,7 +64,8 @@ export default function authReducer(state = initialState, action: any) {
 			return {
 				...state,
 				isLoading: false,
-				status: action.payload.status
+				status: action.payload.status,
+				user: action.payload.user
 			};
 		}
 

@@ -6,7 +6,7 @@ import { verifyUser } from '../redux/actions/authAction';
 
 export const withAuth = (WrappedComponent: any) => {
 	return function(props: any) {
-		// const [ status, setStatus ] = useState<string>('loading');
+		const [ isLoading, setIsLoadingStatus ] = useState<boolean>(true);
 		// //redux state
 		// const isLoading = useSelector((state: any) => state.auth.isLoading);
 		const status = useSelector((state: any) => state.auth.status);
@@ -14,15 +14,20 @@ export const withAuth = (WrappedComponent: any) => {
 		const dispatch = useDispatch();
 		useEffect(() => {
 			const verify = async () => {
-				await dispatch(verifyUser());
-				// const result = await mainAxios.get('/auth/verify');
-				// const { status } = result.data;
-				// setStatus(status);
-				// console.log(status);
+				try {
+					await dispatch(verifyUser());
+					// const result = await mainAxios.get('/auth/verify');
+					// const { status } = result.data;
+					// setStatus(status);
+					setIsLoadingStatus(false);
+					console.log(status);
+				} catch (ex) {
+					setIsLoadingStatus(true);
+				}
 			};
 			verify();
 		}, []);
-		if (status === 'loading') return <div>Loading...</div>;
+		if (isLoading) return <div>Loading...</div>;
 		if (!status) return <Redirect to="/login" />;
 		return <WrappedComponent {...props} />;
 		//redux implementations

@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import root from './reducers';
 import thunk from 'redux-thunk';
+
 // import saga from "redux-saga"
 declare global {
 	interface Window {

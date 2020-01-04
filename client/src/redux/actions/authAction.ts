@@ -1,25 +1,29 @@
 import Actions from './action.config';
 import mainAxios from '../../axios/mainAxios';
 import { registerUserService, loginUserService, verifyUserService } from '../service';
+import { push } from 'react-router-redux';
+import { useHistory } from 'react-router-dom';
 
-export const registerUser = (user: object) => {
+export const registerUser = (user: object, history: any) => {
 	return async (dispatch: any) => {
 		try {
-			console.log('auth action user info ', user);
 			const data = await registerUserService(user);
-			console.log('data from auth action ', data);
-			// if (data.error === 'error') throw 'register error';
 			if (data.msg === 'error') throw 'register failed';
-			console.log(data);
 			dispatch(registerUserAction(data));
+			if (data.msg === 'redirect') {
+				if (data.msg === 'redirect') {
+					history.push('/login');
+					return;
+				}
+			}
 		} catch (ex) {
 			console.log('error from register = ', ex);
-			// dispatch(authUserErrorAction());
+			dispatch(authUserErrorAction(ex));
 		}
 	};
 };
 
-export const loginUser = (user: object) => {
+export const loginUser = (user: object, history: any) => {
 	return async (dispatch: any) => {
 		try {
 			console.log('auth action user info ', user);
@@ -27,9 +31,14 @@ export const loginUser = (user: object) => {
 			if (data.msg === 'error') throw 'login failed';
 			console.log('data from auth action ', data);
 			dispatch(loginUserAction(data));
-		} catch (error) {
+			const token = localStorage.getItem('token');
+			if (data.msg === 'redirect' && token) {
+				history.push('/');
+				return;
+			}
+		} catch (ex) {
 			console.log('auth login error ');
-			dispatch(authUserErrorAction());
+			dispatch(authUserErrorAction(ex));
 		}
 	};
 };
@@ -47,8 +56,9 @@ export const verifyUser = () => {
 export const userLoadingAction = () => ({
 	type: Actions.USER_LOADING
 });
-export const authUserErrorAction = () => ({
-	type: Actions.AUTH_ERROR
+export const authUserErrorAction = (ex: string) => ({
+	type: Actions.AUTH_ERROR,
+	payload: ex
 });
 export const loginUserAction = (data: object) => ({
 	type: Actions.LOGIN_USER,

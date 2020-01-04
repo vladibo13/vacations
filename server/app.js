@@ -16,8 +16,8 @@ app.get('/', async (req, res, next) => {
 	res.json(first);
 });
 
-app.use('/vacation', vactionRoutes);
 app.use('/auth', authRoutes);
+app.use('/vacations', vactionRoutes);
 
 app.listen(process.env.PORT, () => {
 	console.log(`server running on port ${process.env.PORT}...`);

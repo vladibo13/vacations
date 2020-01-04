@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -39,24 +40,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const VacRegister: React.FC = (props: any) => {
+	const { msg, isRegistred, error } = useSelector((state: any) => ({
+		msg: state.auth.msg,
+		isRegistred: state.auth.isRegistred,
+		error: state.auth.error
+	}));
 	const initialState = { firstname: '', lastname: '', email: '', password: '' };
 	const [ formData, setFormData ] = useCustomForm(initialState);
 	// const msg = useSelector((state: any) => state.auth.msg);
 	// const isRegistred = useSelector((state: any) => state.auth.isRegistred);
-	const { msg, isRegistred } = useSelector((state: any) => ({
-		msg: state.auth.msg,
-		isRegistred: state.auth.isRegistred
-	}));
+
 	const dispatch = useDispatch();
 	const classes = useStyles();
+	// let history = useHistory();
 
 	const handleRegister = async () => {
 		console.log(props);
 		try {
-			await dispatch(registerUser(formData));
+			await dispatch(registerUser(formData, props.history));
 			console.log(msg === 'redirect');
+			// console.log('history = ', history);
 			// console.log('isRegistred = ', isRegistred);
-			// if (msg === 'redirect') props.history.push('/login');
+			// if (msg === 'redirect') history.push('/login');
 		} catch (ex) {
 			console.log('returning...');
 			return;
@@ -64,7 +69,7 @@ const VacRegister: React.FC = (props: any) => {
 	};
 	return (
 		<Container className={classes.root} component="main" maxWidth="xs">
-			{isRegistred && msg === 'redirect' && <Redirect to="/login" />}
+			{/* {isRegistred && msg === 'redirect' && <Redirect to="/login" />} */}
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
@@ -126,7 +131,7 @@ const VacRegister: React.FC = (props: any) => {
 							/>
 						</Grid>
 					</Grid>
-					<Typography color="error">{msg}</Typography>
+					<Typography color="error">{error}</Typography>
 					<Button
 						onClick={handleRegister}
 						type="button"

@@ -33,3 +33,14 @@ export const verifyUserService = async () => {
 		return { msg: 'error' };
 	}
 };
+
+export const getAllVacations = async () => {
+	try {
+		console.log('user from service =  ');
+		const { data } = await mainAxios.get('/vacations');
+		console.log('data from service ', data);
+		return data;
+	} catch (ex) {
+		return { msg: ex };
+	}
+};
