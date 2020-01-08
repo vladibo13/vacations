@@ -1,10 +1,10 @@
 import Actions from './action.config';
-import { getAllVacations } from '../service';
+import { getAllVacationsService, deleteVacationService, addVacationService } from '../service';
 
 export const getVacations = () => {
 	return async (dispatch: any) => {
 		try {
-			const data = await getAllVacations();
+			const data = await getAllVacationsService();
 			console.log('data from vacations actions = ', data);
 			dispatch(getAllVacationsAction(data));
 		} catch (ex) {
@@ -13,7 +13,42 @@ export const getVacations = () => {
 	};
 };
 
+export const deleteVacation = (id: number) => {
+	return async (dispatch: any) => {
+		try {
+			const data = await deleteVacationService(id);
+			console.log('data from vacations actions = ', data);
+			dispatch(deleteVacationsAction(data));
+		} catch (ex) {
+			console.log(ex);
+		}
+	};
+};
+
+export const addVacation = (vac: object) => {
+	return async (dispatch: any) => {
+		try {
+			console.log(vac);
+			const data = await addVacationService(vac);
+			console.log('data from vacations actions = ', data);
+			dispatch(addVacationAction(data));
+		} catch (ex) {
+			console.log(ex);
+		}
+	};
+};
+
+export const addVacationAction = (data: object) => ({
+	type: Actions.ADD_VACATION,
+	payload: data
+});
+
 export const getAllVacationsAction = (data: object) => ({
 	type: Actions.GET_VACATIONS,
+	payload: data
+});
+
+export const deleteVacationsAction = (data: object) => ({
+	type: Actions.DELETE_VACATION,
 	payload: data
 });
