@@ -108,6 +108,8 @@ const VacAdminItem: React.FC<IProps> = (props) => {
 		console.log(formData);
 		setOpenEdit(false);
 	};
+	console.log(props);
+
 	const handleOpenEdit = (vac: IProps) => {
 		// console.log(vac);
 		console.log(formData.destination);
@@ -115,7 +117,7 @@ const VacAdminItem: React.FC<IProps> = (props) => {
 	};
 	const handleDelete = async (id: any) => {
 		const result = mainAxios.delete('/vacations', { data: { id } });
-		window.location.reload();
+		console.log(result);
 	};
 	const handleEditCloseNoData = () => {
 		setOpenEdit(false);

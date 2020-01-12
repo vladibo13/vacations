@@ -87,14 +87,20 @@ interface IProps {
 const VacAdmin: React.FC<IProps> = () => {
 	useEffect(() => {
 		const initReq = async () => {
-			await dispatch(getVacations());
-			console.log(vacations);
+			try {
+				await dispatch(getVacations());
+				console.log(vacations);
+				console.log(user);
+			} catch (ex) {
+				console.log(ex);
+			}
 		};
 		initReq();
 	}, []);
 	//redux hooks
 	const dispatch = useDispatch();
 	const vacations = useSelector((state: any) => state.vacation.vacations);
+	const user = useSelector((state: any) => state.vacation.user);
 	//styling hooks
 	const classes = useStyles();
 	//modal styling
@@ -118,11 +124,15 @@ const VacAdmin: React.FC<IProps> = () => {
 		// const result = await mainAxios.post('/vacations', { ...formData });
 		// console.log(formData);
 		// console.log(result);
-		const result = await dispatch(addVacation(formData));
-		await dispatch(getVacations());
-		console.log(result);
+		try {
+			const result = await dispatch(addVacation(formData));
+			await dispatch(getVacations());
+			console.log(result);
 
-		setOpen(false);
+			setOpen(false);
+		} catch (ex) {
+			console.log(ex);
+		}
 	};
 	const handleCloseNoData = () => {
 		setOpen(false);

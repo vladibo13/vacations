@@ -32,37 +32,39 @@ const VacNavbar: React.FC = () => {
 						Vacations App
 					</Typography>
 					<Button color="inherit">
-						<Link style={{ color: 'white' }} to="/register">
+						<Link style={{ color: 'white', textDecoration: 'none' }} to="/register">
 							Register
 						</Link>
 					</Button>
 					<Button color="inherit">
-						<Link style={{ color: 'white' }} to="/login">
+						<Link style={{ color: 'white', textDecoration: 'none' }} to="/login">
 							Login
 						</Link>
 					</Button>
 					<Button color="inherit">
-						<Link style={{ color: 'white' }} to="/">
+						<Link style={{ color: 'white', textDecoration: 'none' }} to="/">
 							Home
 						</Link>
 					</Button>
 					<Button color="inherit">
-						<Link style={{ color: 'white' }} to="/admin">
+						<Link style={{ color: 'white', textDecoration: 'none' }} to="/admin">
 							Admin
 						</Link>
 					</Button>
 					<Button color="inherit">
-						<Link style={{ color: 'white' }} to="/main">
+						<Link style={{ color: 'white', textDecoration: 'none' }} to="/main">
 							Main
 						</Link>
 					</Button>
 					<Button color="inherit">
-						<Link style={{ color: 'white' }} to="/chart">
+						<Link style={{ color: 'white', textDecoration: 'none' }} to="/chart">
 							Chart
 						</Link>
 					</Button>
 					<Button onClick={redirectToRegister} color="inherit">
-						Log Out
+						<Link style={{ color: 'white', textDecoration: 'none' }} to="/chart">
+							Log Out
+						</Link>
 					</Button>
 				</Toolbar>
 			</AppBar>

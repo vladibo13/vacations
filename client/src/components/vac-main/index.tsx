@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const VacMain: React.FC = (props: any) => {
+	//request for followed vacations
+	//request for not followed vacations
+	//add is selected
 	useEffect(() => {
 		const initReq = async () => {
 			await dispatch(getVacations());
@@ -62,10 +65,10 @@ const VacMain: React.FC = (props: any) => {
 
 	const classes = useStyles();
 	const vacations = useSelector((state: any) => state.vacation.vacations);
+	const user = useSelector((state: any) => state.auth.user);
 	const status = useSelector((state: any) => state.auth.status);
 	const dispatch = useDispatch();
 
-	console.log(vacations);
 	if (vacations.length === 0) return <p>Loading...</p>;
 	return (
 		<Container className={classes.cardGrid} maxWidth="lg">

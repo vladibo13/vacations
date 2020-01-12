@@ -20,7 +20,16 @@ export const routes = [
 	},
 	{ exact: true, isVisible: true, title: 'Log In', path: '/login', component: VacLogin },
 	{ exact: true, isVisible: true, title: 'Register', path: '/register', component: VacRegister },
-	{ exact: true, isVisible: true, title: 'Main Page', path: '/main', component: VacMain },
+	{
+		exact: true,
+		isVisible: true,
+		title: 'Main Page',
+		path: '/main',
+		component: (props: any) => {
+			const HomeWithAuth = withAuth(VacMain);
+			return <HomeWithAuth {...props} />;
+		}
+	},
 	{ exact: true, isVisible: true, title: 'Admin Page', path: '/admin', component: VacAdmin },
 	{ exact: true, isVisible: true, title: 'Chart Page', path: '/chart', component: VacChart }
 ];

@@ -62,3 +62,12 @@ export const addVacationService = async (vac: object) => {
 		return { msg: ex };
 	}
 };
+
+export const getChartDataService = async () => {
+	try {
+		const { data } = await mainAxios.get('/chart');
+		return data;
+	} catch (ex) {
+		return { msg: ex };
+	}
+};

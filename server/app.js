@@ -5,6 +5,7 @@ const pool = require('./db/pool');
 const authRoutes = require('./routes/auth');
 const vactionRoutes = require('./routes/vacation');
 const chartRoutes = require('./routes/chart');
+const followRoutes = require('./routes/follow');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 app.use(cors());
@@ -20,6 +21,7 @@ app.get('/', async (req, res, next) => {
 app.use('/auth', authRoutes);
 app.use('/vacations', vactionRoutes);
 app.use('/chart', chartRoutes);
+app.use('/follow', followRoutes);
 
 app.listen(process.env.PORT, () => {
 	console.log(`server running on port ${process.env.PORT}...`);

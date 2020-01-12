@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import mainAxios from '../../axios/mainAxios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getVacations } from '../../redux/actions/vacationsAction';
@@ -21,6 +21,10 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Switch from '@material-ui/core/Switch';
+import momemt from 'moment';
+import Moment from 'react-moment';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import LocalAtmIcon from '@material-ui/icons/LocalAtm';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -50,36 +54,47 @@ const useStyles = makeStyles((theme: Theme) =>
 		}
 	})
 );
+// user
 const VacMainItem: React.FC = (props: any) => {
+	useEffect(() => {
+		const initReq = async () => {
+			const { data } = await mainAxios.post('/follow/switchChecker', { userID: user.id, vacationID: id });
+			console.log(data);
+			if (data.length === 1 && !checked) setChecked(true);
+		};
+		initReq();
+	}, []);
 	const classes = useStyles();
+	const user = useSelector((state: any) => state.auth.user);
 
-	const [ state, setState ] = React.useState({
-		checkedB: false
-	});
-	const handleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({ ...state, [name]: event.target.checked });
+	const toggleChecked = () => {
+		//if checked delete from followers
+		// if not checked add to followers
+		console.log(id);
+		console.log(user);
+		setChecked((prev: boolean) => !prev);
 	};
-	const { id, destination, from_date, to_date, picture, description, all_followers, cost } = props;
+	const { id, destination, from_date, to_date, picture, description, all_followers, cost, isSelected } = props;
+	const [ checked, setChecked ] = useState(false);
 	return (
 		<Grid item xs={12} sm={6} md={4}>
 			<Card className={classes.card}>
 				<CardHeader
 					avatar={
 						<Avatar aria-label="recipe" className={classes.avatar}>
-							R
+							V
 						</Avatar>
 					}
 					action={
 						<Switch
-							checked={state.checkedB}
-							onChange={handleChange('checkedB')}
-							value="checkedB"
+							checked={checked}
+							onChange={toggleChecked}
 							color="primary"
 							inputProps={{ 'aria-label': 'primary checkbox' }}
 						/>
 					}
 					title={destination}
-					subheader={`${from_date} - ${to_date}`}
+					subheader={formatDate(from_date, to_date)}
 				/>
 				<CardMedia className={classes.media} image={picture} title="Paella dish" />
 				<CardContent>
@@ -89,17 +104,30 @@ const VacMainItem: React.FC = (props: any) => {
 				</CardContent>
 				<CardActions disableSpacing>
 					<IconButton aria-label="add to favorites">
-						<FavoriteIcon />
 						{all_followers}
+						<FavoriteBorderIcon />
 					</IconButton>
 					<IconButton aria-label="share">
-						<ShareIcon />
-						{cost}$
+						{cost}
+						<LocalAtmIcon />
 					</IconButton>
 				</CardActions>
 			</Card>
 		</Grid>
 	);
 };
+
+function formatDate(from: string, to: string) {
+	return (
+		<React.Fragment>
+			<div>
+				From: <Moment format="YYYY/MM/DD HH:mm">{from}</Moment>
+			</div>
+			<div>
+				To: <Moment format="YYYY/MM/DD HH:mm">{to}</Moment>
+			</div>
+		</React.Fragment>
+	);
+}
 
 export default VacMainItem;

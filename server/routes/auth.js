@@ -6,8 +6,8 @@ const { registerValidation, loginValidation } = require('../validations/userVali
 const { hashPassword, compareHashPassword } = require('../utils/hashPassword');
 const { getJwt } = require('../utils/createJWT');
 
-router.use('/register', registerValidation);
-router.post('/register', async (req, res, next) => {
+// router.use('/register', registerValidation);
+router.post('/register', registerValidation, async (req, res, next) => {
 	console.log(req.body);
 	const { firstname, lastname, email, password } = req.body;
 	if (!firstname || !lastname || !email || !password)
@@ -26,8 +26,8 @@ router.post('/register', async (req, res, next) => {
 	}
 });
 
-router.use('/login', loginValidation);
-router.post('/login', async (req, res, next) => {
+// router.use('/login', loginValidation);
+router.post('/login', loginValidation, async (req, res, next) => {
 	const { email, password } = req.body;
 	if (!email || !password) return res.status(400).json({ msg: 'fields are mandatory' });
 	try {
