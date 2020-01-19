@@ -50,8 +50,9 @@ const useStyles = makeStyles((theme: Theme) =>
 const VacMainItem: React.FC = (props: any) => {
 	useEffect(() => {
 		const initReq = async () => {
-			const { data } = await mainAxios.post('/follow/switchChecker', { userID: user.id, vacationID: id });
-			if (data.length) setChecked(true);
+			// const { data } = await mainAxios.post('/follow/switchChecker', { userID: user.id, vacationID: id });
+			// if (data.length) setChecked(true);
+			if (isSelected) setChecked(true);
 		};
 		initReq();
 		// if (isSelected) setChecked(true);
@@ -116,10 +117,10 @@ function formatDate(from: string, to: string) {
 	return (
 		<React.Fragment>
 			<div>
-				From: <Moment format="YYYY/MM/DD HH:mm">{from}</Moment>
+				From: <Moment format="YYYY-MM-DD HH:mm">{from}</Moment>
 			</div>
 			<div>
-				To: <Moment format="YYYY/MM/DD HH:mm">{to}</Moment>
+				To: <Moment format="YYYY-MM-DD HH:mm">{to}</Moment>
 			</div>
 		</React.Fragment>
 	);

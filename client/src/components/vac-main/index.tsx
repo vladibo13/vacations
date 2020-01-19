@@ -42,9 +42,9 @@ const VacMain: React.FC = (props: any) => {
 	useEffect(() => {
 		const initReq = async () => {
 			try {
-				await dispatch(getVacations());
+				// await dispatch(getVacations());
 
-				// await dispatch(getVacationsFiltred(user.id));
+				await dispatch(getVacationsFiltred(user.id));
 			} catch (e) {
 				console.log(e);
 			}
@@ -60,11 +60,11 @@ const VacMain: React.FC = (props: any) => {
 	const dispatch = useDispatch();
 	console.log('VACATIONS ============ ', vacations);
 
-	if (vacations.length === 0) return <p>Loading...</p>;
+	if (!vacations.length) return <p>Loading...</p>;
 	return (
 		<Container className={classes.cardGrid} maxWidth="lg">
 			<Grid container spacing={4}>
-				{vacations.map((vac: IVacation) => {
+				{vacations.sort((x: any, y: any): number => y.isSelected - x.isSelected).map((vac: IVacation) => {
 					return <VacMainItem key={vac.id} {...vac} />;
 				})}
 			</Grid>

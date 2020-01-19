@@ -56,6 +56,20 @@ export const addVacation = (vac: object) => {
 	};
 };
 
+export const clearVacations = () => {
+	return async (dispatch: any) => {
+		try {
+			dispatch(clearVacationsAction());
+		} catch (ex) {
+			console.log(ex);
+		}
+	};
+};
+
+export const clearVacationsAction = () => ({
+	type: Actions.CLEAR_VACATIONS
+});
+
 export const addVacationAction = (data: object) => ({
 	type: Actions.ADD_VACATION,
 	payload: data

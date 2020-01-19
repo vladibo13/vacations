@@ -13,18 +13,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { IVacation } from '../../types';
-
+import Moment from 'react-moment';
 import Modal from '@material-ui/core/Modal';
-interface IProps {
-	id: number;
-	destination: string;
-	from_date: string;
-	to_date: string;
-	picture: string;
-	description: string;
-	all_followers: number;
-	cost: number;
-}
+
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		paper: {
@@ -106,6 +97,12 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 	const [ formData, setFormData ] = useCustomForm(initialState);
 	//modal functions
 	const handleClose = async () => {
+		try {
+			const data = await mainAxios.put('/vacations', { ...formData });
+			console.log('DATA === ', data);
+		} catch (ex) {
+			console.log(ex);
+		}
 		setOpenEdit(false);
 	};
 
@@ -113,7 +110,8 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 		setOpenEdit(true);
 	};
 	const handleDelete = async (id: any) => {
-		const result = mainAxios.delete('/vacations', { data: { id } });
+		const result = await mainAxios.delete('/vacations', { data: { id } });
+		console.log('RESULT ====== ', result);
 	};
 	const handleEditCloseNoData = () => {
 		setOpenEdit(false);
@@ -211,7 +209,7 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 							value={formData.cost}
 						/>
 
-						<TextField
+						{/* <TextField
 							variant="outlined"
 							margin="normal"
 							required
@@ -223,7 +221,7 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 							autoComplete="all_followers"
 							onChange={setFormData}
 							value={formData.all_followers}
-						/>
+						/> */}
 
 						<Button
 							onClick={handleClose}
@@ -262,3 +260,10 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 };
 
 export default VacAdminItem;
+function formatDate(from: string) {
+	return (
+		<React.Fragment>
+			From: <Moment format="YYYY-MM-DD HH:mm">{from}</Moment>
+		</React.Fragment>
+	);
+}

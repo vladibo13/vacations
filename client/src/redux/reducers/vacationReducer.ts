@@ -22,6 +22,13 @@ export default function vacationReducer(state = initialState, action: any) {
 			};
 		}
 
+		case Actions.CLEAR_VACATIONS: {
+			return {
+				...state,
+				vacations: []
+			};
+		}
+
 		case Actions.DELETE_VACATION: {
 			return {
 				...state,

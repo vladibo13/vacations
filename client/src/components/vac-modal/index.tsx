@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		paper: {
 			position: 'absolute',
-			width: 400,
+			width: 600,
 			backgroundColor: theme.palette.background.paper,
 			border: '1px solid #000',
 			boxShadow: theme.shadows[5],
@@ -87,7 +87,7 @@ const VacModal: React.FC = () => {
 	const handleClose = async () => {
 		try {
 			const result = await dispatch(addVacation(formData));
-			await dispatch(getVacations());
+			// await dispatch(getVacations());
 			console.log(result);
 
 			setOpen(false);
@@ -118,14 +118,15 @@ const VacModal: React.FC = () => {
 							margin="normal"
 							required
 							fullWidth
-							multiline
-							rows="4"
+							multiline={true}
 							name="description"
 							label="Description"
 							type="text"
 							id="description"
 							autoComplete="description"
 							onChange={setFormData}
+							rows={4}
+							rowsMax={7}
 						/>
 						<TextField
 							variant="outlined"

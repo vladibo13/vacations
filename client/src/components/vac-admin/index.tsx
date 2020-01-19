@@ -32,7 +32,7 @@ const VacAdmin: React.FC<IVacation> = () => {
 	const vacations = useSelector((state: any) => state.vacation.vacations);
 	const classes = useStyles();
 
-	if (vacations.length === 0) return <p>Loading...</p>;
+	if (!vacations.length) return <p>Loading...</p>;
 	return (
 		<div>
 			{/* {user.role !== admin && <Redirect to="/login" />} */}

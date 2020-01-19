@@ -9,6 +9,7 @@ import { prependOnceListener } from 'cluster';
 import { useDispatch, useSelector } from 'react-redux';
 import { IUser } from '../../types';
 import { logoutUser } from '../../redux/actions/authAction';
+import { clearVacations } from '../../redux/actions/vacationsAction';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -35,6 +36,7 @@ const VacNavbar: React.FC = () => {
 	const redirectToRegister = () => {
 		localStorage.removeItem('token');
 		dispatch(logoutUser());
+		dispatch(clearVacations());
 	};
 	const loginOrProfile = (user: IUser) => {
 		if (!user)

@@ -7,7 +7,7 @@ export interface IVacation {
 	description: string;
 	all_followers?: number;
 	cost: number;
-	isSelected?: boolean;
+	isSelected: boolean;
 }
 
 export interface IUser {

@@ -2,7 +2,12 @@ const {
 	getUserExistQuery,
 	getUserInsertionQuery,
 	getUserPasswordExistQuery,
-	gethashedPasswordQuery
+	gethashedPasswordQuery,
+	getUserChartsQuery,
+	getAllVacationsQuery,
+	getLikedVacationsQuery,
+	addVacationQuery,
+	deleteVacationQuery
 } = require('./queries');
 const pool = require('../db/pool');
 
@@ -32,4 +37,46 @@ async function getHashedPassword(email) {
 	return hashedPassword;
 }
 
-module.exports = { saveUser, isUserExist, getHashedPassword };
+async function getUserCharts() {
+	const query = getUserChartsQuery();
+	const [ result ] = await pool.execute(query);
+	return result;
+}
+
+async function getAllVacations() {
+	const query = getAllVacationsQuery();
+	const result = await pool.execute(query);
+	const [ vacations ] = result;
+	return vacations;
+}
+
+async function getLikedVacations(id) {
+	const query = getLikedVacationsQuery();
+	const payload = [ id ];
+	const result = await pool.execute(query, payload);
+	const [ likedVacations ] = result;
+	return likedVacations;
+}
+
+async function addVacation(description, destination, picture, from_date, to_date, all_followers, cost) {
+	const query = addVacationQuery();
+	const payload = [ description, destination, picture, from_date, to_date, all_followers, cost ];
+	const result = await pool.execute(query, payload);
+	return result;
+}
+async function deleteVacation(id) {
+	const query = deleteVacationQuery();
+	const payload = [ id ];
+	const result = await pool.execute(query, payload);
+	return result;
+}
+module.exports = {
+	saveUser,
+	isUserExist,
+	getHashedPassword,
+	getUserCharts,
+	getAllVacations,
+	getLikedVacations,
+	addVacation,
+	deleteVacation
+};

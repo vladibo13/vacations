@@ -4,9 +4,10 @@ const vacationSchema = Joi.object({
 	description: Joi.string().required(),
 	destination: Joi.string().required(),
 	picture: Joi.string().required(),
-	date: Joi.date().required(),
+	from_date: Joi.string().required(),
+	to_date: Joi.string().required(),
 	cost: Joi.number().required(),
-	followers: Joi.number().required()
+	all_followers: Joi.number().required()
 });
 
 function vacationValidation(req, res, next) {
