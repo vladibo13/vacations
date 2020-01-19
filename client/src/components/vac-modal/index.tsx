@@ -1,29 +1,23 @@
 import React, { useState } from 'react';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Modal from '@material-ui/core/Modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { getVacations, addVacation } from '../../redux/actions/vacationsAction';
 import useCustomForm from '../../hooks/useCustomHook';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import mainAxios from '../../axios/mainAxios';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { IVacation } from '../../types';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
-import Modal from '@material-ui/core/Modal';
-interface IProps {
-	id: number;
-	destination: string;
-	from_date: string;
-	to_date: string;
-	picture: string;
-	description: string;
-	all_followers: number;
-	cost: number;
+function getModalStyle() {
+	const top = 50;
+	const left = 50;
+
+	return {
+		top: `${top}%`,
+		left: `${left}%`,
+		transform: `translate(-${top}%, -${left}%)`
+	};
 }
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -73,75 +67,65 @@ const useStyles = makeStyles((theme: Theme) =>
 		}
 	})
 );
-function getModalStyle() {
-	const top = 50;
-	const left = 50;
 
-	return {
-		top: `${top}%`,
-		left: `${left}%`,
-		transform: `translate(-${top}%, -${left}%)`
-	};
-}
-
-const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
-	const { destination, description, picture, cost, all_followers, id, from_date, to_date } = props;
-	//init state for editing
-	const initialState = {
-		destination,
-		from_date,
-		to_date,
-		picture,
-		description,
-		all_followers,
-		cost,
-		id
-	};
-	//styling
+const VacModal: React.FC = () => {
 	const classes = useStyles();
-	//modal states
+	const dispatch = useDispatch();
+	const [ open, setOpen ] = useState(false);
 	const [ modalStyle ] = useState(getModalStyle);
-	const [ openEdit, setOpenEdit ] = useState(false);
-	// form data handler for editing
-	const [ formData, setFormData ] = useCustomForm(initialState);
-	//modal functions
-	const handleClose = async () => {
-		setOpenEdit(false);
+	const initialState = {
+		destination: '',
+		from_date: '',
+		to_date: '',
+		picture: '',
+		description: '',
+		all_followers: 0,
+		cost: 0
 	};
 
-	const handleOpenEdit = (vac: IVacation) => {
-		setOpenEdit(true);
+	const [ formData, setFormData ] = useCustomForm(initialState);
+	const handleClose = async () => {
+		try {
+			const result = await dispatch(addVacation(formData));
+			await dispatch(getVacations());
+			console.log(result);
+
+			setOpen(false);
+		} catch (ex) {
+			console.log(ex);
+		}
 	};
-	const handleDelete = async (id: any) => {
-		const result = mainAxios.delete('/vacations', { data: { id } });
+	const handleCloseNoData = () => {
+		setOpen(false);
 	};
-	const handleEditCloseNoData = () => {
-		setOpenEdit(false);
+	const handleOpen = () => {
+		setOpen(true);
 	};
 
 	return (
 		<React.Fragment>
 			<Modal
-				aria-labelledby="edit-modal-title"
-				aria-describedby="edit-modal-description"
-				open={openEdit}
-				onClose={handleEditCloseNoData}
+				aria-labelledby="add-vacation-modal-title"
+				aria-describedby="add-vacation-modal-description"
+				open={open}
+				onClose={handleCloseNoData}
 			>
 				<div style={modalStyle} className={classes.paper}>
-					<h1>Edit Vacation</h1>
+					<h1>Add Vacation</h1>
 					<form className={classes.form} noValidate>
 						<TextField
 							variant="outlined"
 							margin="normal"
 							required
 							fullWidth
+							multiline
+							rows="4"
 							name="description"
 							label="Description"
 							type="text"
 							id="description"
 							autoComplete="description"
 							onChange={setFormData}
-							value={formData.description}
 						/>
 						<TextField
 							variant="outlined"
@@ -155,7 +139,6 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 							autoFocus
 							onChange={setFormData}
 							type="text"
-							value={formData.destination}
 						/>
 						<TextField
 							variant="outlined"
@@ -168,7 +151,6 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 							id="picture"
 							autoComplete="picture"
 							onChange={setFormData}
-							value={formData.picture}
 						/>
 
 						<TextField
@@ -182,7 +164,6 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 							id="from_date"
 							autoComplete="from_date"
 							onChange={setFormData}
-							value={formData.from_date}
 						/>
 						<TextField
 							variant="outlined"
@@ -195,7 +176,6 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 							id="to_date"
 							autoComplete="to_date"
 							onChange={setFormData}
-							value={formData.to_date}
 						/>
 						<TextField
 							variant="outlined"
@@ -208,7 +188,6 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 							id="cost"
 							autoComplete="cost"
 							onChange={setFormData}
-							value={formData.cost}
 						/>
 
 						<TextField
@@ -222,7 +201,6 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 							id="all_followers"
 							autoComplete="all_followers"
 							onChange={setFormData}
-							value={formData.all_followers}
 						/>
 
 						<Button
@@ -233,32 +211,16 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 							color="primary"
 							className={classes.submit}
 						>
-							Edit Vacation
+							Add Vacation
 						</Button>
 					</form>
 				</div>
 			</Modal>
-			<Grid item key={id} xs={12} sm={6} md={4}>
-				<Card className={classes.card}>
-					<CardMedia className={classes.cardMedia} image={picture} title="Image title" />
-					<CardContent className={classes.cardContent}>
-						<Typography gutterBottom variant="h5" component="h2">
-							{destination}
-						</Typography>
-						<Typography>{description}</Typography>
-					</CardContent>
-					<CardActions>
-						<Button onClick={() => handleDelete(id)} type="button" size="large" color="primary">
-							<DeleteIcon />
-						</Button>
-						<Button onClick={() => handleOpenEdit(props)} size="small" color="primary">
-							<EditIcon />
-						</Button>
-					</CardActions>
-				</Card>
-			</Grid>
+			<Fab onClick={handleOpen} color="primary" aria-label="add">
+				<AddIcon />
+			</Fab>
 		</React.Fragment>
 	);
 };
 
-export default VacAdminItem;
+export default VacModal;

@@ -10,11 +10,10 @@ export const registerUser = (user: object, history: any) => {
 			const data = await registerUserService(user);
 			if (data.msg === 'error') throw 'register failed';
 			dispatch(registerUserAction(data));
+
 			if (data.msg === 'redirect') {
-				if (data.msg === 'redirect') {
-					history.push('/login');
-					return;
-				}
+				history.push('/login');
+				return;
 			}
 		} catch (ex) {
 			console.log('error from register = ', ex);
@@ -43,6 +42,16 @@ export const loginUser = (user: object, history: any) => {
 	};
 };
 
+export const logoutUser = () => {
+	return async (dispatch: any) => {
+		try {
+			dispatch(logoutUserAction());
+		} catch (ex) {
+			dispatch(authUserErrorAction(ex));
+		}
+	};
+};
+
 export const verifyUser = () => {
 	return async (dispatch: any) => {
 		await dispatch(userLoadingAction());
@@ -52,6 +61,9 @@ export const verifyUser = () => {
 		dispatch(verifyUserAction(data));
 	};
 };
+export const logoutUserAction = () => ({
+	type: Actions.LOGOUT_USER
+});
 
 export const userLoadingAction = () => ({
 	type: Actions.USER_LOADING

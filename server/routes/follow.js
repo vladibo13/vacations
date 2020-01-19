@@ -7,13 +7,57 @@ router.get('/', async (req, res, next) => {
 	res.json({ msg: 'hello from follow route' });
 });
 
-// select *
-// from vacation
-//  join  followers
-// on followers.vacation_id = vacation.id
-//  join users
-// on followers.user_id = users.id
-// where vacation.id = 11 and user_id = 1
+router.post('/', async (req, res, next) => {
+	const { vacationID, userID } = req.body;
+	if (!vacationID || !userID) return res.json({ msg: 'user and vacation id not provided' });
+	try {
+		//check if record not exist in db
+		const [
+			ifExistFollower
+		] = await pool.execute('select * from `vacations`.`followers` where user_id = ? and vacation_id = ?', [
+			userID,
+			vacationID
+		]);
+		const [ result ] = ifExistFollower;
+		if (result) return res.json({ msg: 'record already exist' });
+		// res.json({ msg: 'record not exist' });
+		const resultQuery = await pool.execute(
+			'INSERT INTO `vacations`.`followers` (`user_id`, `vacation_id`) VALUES (?,?)',
+			[ userID, vacationID ]
+		);
+		//update all followers + 1
+		const updateQuery = await pool.execute(
+			'UPDATE `vacations`.`vacation` set all_followers = all_followers + 1 WHERE id = ?',
+			[ vacationID ]
+		);
+		res.json({
+			msg: 'success post',
+			resuaffectedRows: resultQuery[0].affectedRows,
+			updateQuery: updateQuery[0].affectedRows
+		});
+	} catch (ex) {
+		res.json({ error: ex });
+	}
+});
+
+//delete follower based on id an vacation
+router.delete('/', async (req, res, next) => {
+	const { vacationID, userID } = req.body;
+	try {
+		//update all_followers -1
+		const updateQuery = await pool.execute(
+			'UPDATE `vacations`.`vacation` set all_followers = all_followers - 1 WHERE id = ?',
+			[ vacationID ]
+		);
+		const result = await pool.execute('DELETE FROM `vacations`.`followers` WHERE user_id = ? and vacation_id = ?', [
+			userID,
+			vacationID
+		]);
+		res.json({ msg: 'success', result, updateQuery: updateQuery[0].affectedRows });
+	} catch (ex) {
+		res.json({ error: ex });
+	}
+});
 
 router.post('/switchChecker', async (req, res, next) => {
 	const { userID, vacationID } = req.body;

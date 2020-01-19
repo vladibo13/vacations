@@ -1,5 +1,10 @@
 import Actions from './action.config';
-import { getAllVacationsService, deleteVacationService, addVacationService } from '../service';
+import {
+	getAllVacationsService,
+	deleteVacationService,
+	addVacationService,
+	getAllVacationsFiltredService
+} from '../service';
 
 export const getVacations = () => {
 	return async (dispatch: any) => {
@@ -7,6 +12,19 @@ export const getVacations = () => {
 			const data = await getAllVacationsService();
 			console.log('data from vacations actions = ', data);
 			dispatch(getAllVacationsAction(data));
+		} catch (ex) {
+			console.log(ex);
+		}
+	};
+};
+
+export const getVacationsFiltred = (id: number) => {
+	return async (dispatch: any) => {
+		try {
+			console.log('hello from filtred = ', id);
+			const data = await getAllVacationsFiltredService(id);
+			console.log('data from vacations actions filtred = ', data);
+			dispatch(getVacationsFiltredAction(data));
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -50,5 +68,9 @@ export const getAllVacationsAction = (data: object) => ({
 
 export const deleteVacationsAction = (data: object) => ({
 	type: Actions.DELETE_VACATION,
+	payload: data
+});
+export const getVacationsFiltredAction = (data: object) => ({
+	type: Actions.GET_LIKED_VACATIONS,
 	payload: data
 });

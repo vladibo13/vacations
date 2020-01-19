@@ -19,6 +19,19 @@ export default function authReducer(state = initialState, action: any) {
 			};
 		}
 
+		case Actions.LOGOUT_USER: {
+			return {
+				...state,
+				isAuthenticated: null,
+				isLoading: false,
+				user: null,
+				isRegistred: null,
+				error: '',
+				status: false,
+				msg: ''
+			};
+		}
+
 		case Actions.USER_LOADING: {
 			return {
 				...state,

@@ -15,7 +15,7 @@ const VacChart: React.FC = (props: any) => {
 			// const result = await mainAxios.get('/chart');
 			// setDestinations(result.data.destinations);
 			// setFollowers(result.data.followers);
-			// console.log(result);
+
 			await dispatch(getChart());
 		};
 		initReq();

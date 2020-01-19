@@ -3,22 +3,16 @@ import mainAxios from '../axios/mainAxios';
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { verifyUser } from '../redux/actions/authAction';
+import VacLoader from '../components/vac-loader';
 
-export const withAuth = (WrappedComponent: any) => {
+export const withAuth = (WrappedComponent: any, isadmin?: boolean) => {
 	return function(props: any) {
-		const [ isLoading, setIsLoadingStatus ] = useState<boolean>(true);
-		// //redux state
-		// const isLoading = useSelector((state: any) => state.auth.isLoading);
-		const status = useSelector((state: any) => state.auth.status);
-		// //redux dispatch
-		const dispatch = useDispatch();
+		console.log(WrappedComponent);
+
 		useEffect(() => {
 			const verify = async () => {
 				try {
 					await dispatch(verifyUser());
-					// const result = await mainAxios.get('/auth/verify');
-					// const { status } = result.data;
-					// setStatus(status);
 					setIsLoadingStatus(false);
 					console.log(status);
 				} catch (ex) {
@@ -27,10 +21,16 @@ export const withAuth = (WrappedComponent: any) => {
 			};
 			verify();
 		}, []);
-		if (isLoading) return <div>Loading...</div>;
+
+		const dispatch = useDispatch();
+		const status = useSelector((state: any) => state.auth.status);
+		const user = useSelector((state: any) => state.auth.user);
+		const [ isLoading, setIsLoadingStatus ] = useState<boolean>(true);
+
+		if (isLoading) return <VacLoader />;
 		if (!status) return <Redirect to="/login" />;
+		if (isadmin && user.role !== 'admin' && user.role === 'member') return <Redirect to="/main" />;
+		if (!isadmin && user.role !== 'member' && user.role === 'admin') return <Redirect to="/admin" />;
 		return <WrappedComponent {...props} />;
-		//redux implementations
-		// if(status) return <div></div>
 	};
 };

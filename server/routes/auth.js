@@ -53,8 +53,8 @@ router.get('/verify', async (req, res, next) => {
 		console.log(authorization);
 		jwt.verify(authorization, process.env.SECRET, (err, decoded) => {
 			if (err) return res.json({ status: false });
-			const { id, firstname, lastname, email } = decoded;
-			return res.json({ status: true, user: { id, firstname, lastname, email } });
+			const { id, firstname, lastname, email, role } = decoded;
+			return res.json({ status: true, user: { id, firstname, lastname, email, role } });
 		});
 	} catch (ex) {
 		return res.json({ status: false });

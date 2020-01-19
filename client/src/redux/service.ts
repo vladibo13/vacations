@@ -45,6 +45,17 @@ export const getAllVacationsService = async () => {
 	}
 };
 
+export const getAllVacationsFiltredService = async (id: number) => {
+	try {
+		console.log('id from service =  ', id);
+		const { data } = await mainAxios.post('/vacations/filtred', { userID: id });
+		console.log('getAllVacationsFiltredService service = ', data);
+		return data;
+	} catch (ex) {
+		return { msg: ex };
+	}
+};
+
 export const deleteVacationService = async (id: number) => {
 	try {
 		const { data } = await mainAxios.delete('/vacations', { data: { id } });
