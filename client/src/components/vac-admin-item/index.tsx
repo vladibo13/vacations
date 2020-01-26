@@ -17,7 +17,7 @@ import Moment from 'react-moment';
 import Modal from '@material-ui/core/Modal';
 import VacModalAdmin from '../vac-modal-admin';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteVacation } from '../../redux/actions/vacationsAction';
+import { deleteVacation, updateVacation } from '../../redux/actions/vacationsAction';
 import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -103,7 +103,8 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 	//modal functions
 	const handleClose = async () => {
 		try {
-			const data = await mainAxios.put('/vacations', { ...formData });
+			// const data = await mainAxios.put('/vacations', { ...formData });
+			await dispatch(updateVacation(formData));
 			await dispatch(getVacations());
 		} catch (ex) {
 			console.log(ex);

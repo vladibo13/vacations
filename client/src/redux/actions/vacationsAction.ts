@@ -3,15 +3,21 @@ import {
 	getAllVacationsService,
 	deleteVacationService,
 	addVacationService,
-	getAllVacationsFiltredService
+	getAllVacationsFiltredService,
+	updateVacationService,
+	unfollowVacationService,
+	followVacationService
 } from '../service';
+import { returnErrors, clearErrors } from './errorAction';
 
 export const getVacations = () => {
 	return async (dispatch: Function) => {
 		try {
 			const data = await getAllVacationsService();
-			console.log('data from vacations actions = ', data);
-			dispatch(getAllVacationsAction(data));
+			dispatch({
+				type: Actions.GET_VACATIONS,
+				payload: data
+			});
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -21,10 +27,11 @@ export const getVacations = () => {
 export const getVacationsFiltred = (id: number) => {
 	return async (dispatch: any) => {
 		try {
-			console.log('hello from filtred = ', id);
 			const data = await getAllVacationsFiltredService(id);
-			console.log('data from vacations actions filtred = ', data);
-			dispatch(getVacationsFiltredAction(data));
+			dispatch({
+				type: Actions.GET_LIKED_VACATIONS,
+				payload: data
+			});
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -35,8 +42,10 @@ export const deleteVacation = (vacationID: number, userID: number) => {
 	return async (dispatch: any) => {
 		try {
 			const data = await deleteVacationService(vacationID, userID);
-			console.log('data from vacations actions = ', data);
-			dispatch(deleteVacationsAction(data));
+			dispatch({
+				type: Actions.DELETE_VACATION,
+				payload: data
+			});
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -46,10 +55,25 @@ export const deleteVacation = (vacationID: number, userID: number) => {
 export const addVacation = (vac: object) => {
 	return async (dispatch: any) => {
 		try {
-			console.log(vac);
 			const data = await addVacationService(vac);
-			console.log('data from vacations actions = ', data);
-			dispatch(addVacationAction(data));
+			dispatch({
+				type: Actions.ADD_VACATION,
+				payload: data
+			});
+		} catch (ex) {
+			console.log(ex);
+		}
+	};
+};
+
+export const updateVacation = (formData: object) => {
+	return async (dispatch: Function) => {
+		try {
+			const { data } = await updateVacationService(formData);
+			dispatch({
+				type: Actions.UPDATE_VACATION,
+				payload: data
+			});
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -57,34 +81,65 @@ export const addVacation = (vac: object) => {
 };
 
 export const clearVacations = () => {
-	return async (dispatch: any) => {
+	return async (dispatch: Function) => {
 		try {
-			dispatch(clearVacationsAction());
+			dispatch({ type: Actions.CLEAR_VACATIONS });
 		} catch (ex) {
 			console.log(ex);
 		}
 	};
 };
 
-export const clearVacationsAction = () => ({
-	type: Actions.CLEAR_VACATIONS
-});
+export const followVacation = (userID: number, vacationID: number) => {
+	return async (dispatch: Function) => {
+		try {
+			const data = await followVacationService(userID, vacationID);
+			dispatch({
+				type: Actions.FOLLOW_VACATION,
+				payload: data
+			});
+		} catch (ex) {
+			console.log(ex);
+		}
+	};
+};
 
-export const addVacationAction = (data: object) => ({
-	type: Actions.ADD_VACATION,
-	payload: data
-});
+export const unfollowVacation = (userID: number, vacationID: number) => {
+	return async (dispatch: Function) => {
+		try {
+			const data = await unfollowVacation(userID, vacationID);
+			dispatch({
+				type: Actions.UNFOLLOW_VACATION,
+				payload: data
+			});
+		} catch (ex) {
+			console.log(ex);
+		}
+	};
+};
+// export const updateVacationAction = (data: object) => ({
+// 	type: Actions.UPDATE_VACATION,
+// 	payload: data
+// });
+// export const clearVacationsAction = () => ({
+// 	type: Actions.CLEAR_VACATIONS
+// });
 
-export const getAllVacationsAction = (data: object) => ({
-	type: Actions.GET_VACATIONS,
-	payload: data
-});
+// export const addVacationAction = (data: object) => ({
+// 	type: Actions.ADD_VACATION,
+// 	payload: data
+// });
 
-export const deleteVacationsAction = (data: object) => ({
-	type: Actions.DELETE_VACATION,
-	payload: data
-});
-export const getVacationsFiltredAction = (data: object) => ({
-	type: Actions.GET_LIKED_VACATIONS,
-	payload: data
-});
+// export const getAllVacationsAction = (data: object) => ({
+// 	type: Actions.GET_VACATIONS,
+// 	payload: data
+// });
+
+// export const deleteVacationsAction = (data: object) => ({
+// 	type: Actions.DELETE_VACATION,
+// 	payload: data
+// });
+// export const getVacationsFiltredAction = (data: object) => ({
+// 	type: Actions.GET_LIKED_VACATIONS,
+// 	payload: data
+// });

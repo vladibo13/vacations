@@ -17,7 +17,7 @@ import Switch from '@material-ui/core/Switch';
 import Moment from 'react-moment';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import { IVacation } from '../../types/index';
-import { followVacService, deleteVacService } from '../../redux/service';
+import { followVacationService, unfollowVacationService } from '../../redux/service';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -75,11 +75,11 @@ const VacMainItem: React.FC = (props: any) => {
 
 	const toggleChecked = async () => {
 		if (!checked) {
-			await followVacService(user.id, id);
-			await dispatch(getVacations(user.id));
+			await followVacationService(user.id, id);
+			// await dispatch(getVacations(user.id));
 		} else {
-			await deleteVacService(user.id, id);
-			await dispatch(getVacations(user.id));
+			await unfollowVacationService(user.id, id);
+			// await dispatch(getVacations(user.id));
 		}
 		setChecked((prev: boolean) => !prev);
 	};

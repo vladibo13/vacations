@@ -45,6 +45,27 @@ export default function vacationReducer(state = initialState, action: any) {
 			};
 		}
 
+		case Actions.UPDATE_VACATION: {
+			return {
+				...state,
+				msgVacation: action.payload.msg
+			};
+		}
+
+		case Actions.FOLLOW_VACATION: {
+			return {
+				...state,
+				msgVacation: action.payload.msg
+			};
+		}
+
+		case Actions.UNFOLLOW_VACATION: {
+			return {
+				...state,
+				msgVacation: action.payload.msg
+			};
+		}
+
 		default:
 			return state;
 	}
