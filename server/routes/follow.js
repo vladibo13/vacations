@@ -30,7 +30,7 @@ router.post('/', async (req, res, next) => {
 			'UPDATE `vacations`.`vacation` set all_followers = all_followers + 1 WHERE id = ?',
 			[ vacationID ]
 		);
-		res.json({
+		res.status(200).json({
 			msg: 'success post',
 			resuaffectedRows: resultQuery[0].affectedRows,
 			updateQuery: updateQuery[0].affectedRows

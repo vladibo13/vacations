@@ -29,7 +29,7 @@ function deleteVacationQuery() {
 	return 'DELETE FROM `vacations`.`vacation` WHERE id = ?';
 }
 function updateVacationQuery() {
-	return 'UPDATE `vacations`.`vacation` SET destination = ?, from_date = ?, to_date = ?, picture = ?, description = ?, cost = ? WHERE id = ?';
+	return 'UPDATE `vacations`.`vacation` SET description = ?, destination = ?, picture = ?, from_date = ?, to_date = ?, cost = ? WHERE id = ?';
 }
 module.exports = {
 	getUserExistQuery,
@@ -40,5 +40,6 @@ module.exports = {
 	getAllVacationsQuery,
 	getLikedVacationsQuery,
 	addVacationQuery,
-	deleteVacationQuery
+	deleteVacationQuery,
+	updateVacationQuery
 };

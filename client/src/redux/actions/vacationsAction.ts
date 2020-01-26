@@ -7,7 +7,7 @@ import {
 } from '../service';
 
 export const getVacations = () => {
-	return async (dispatch: any) => {
+	return async (dispatch: Function) => {
 		try {
 			const data = await getAllVacationsService();
 			console.log('data from vacations actions = ', data);
@@ -31,10 +31,10 @@ export const getVacationsFiltred = (id: number) => {
 	};
 };
 
-export const deleteVacation = (id: number) => {
+export const deleteVacation = (vacationID: number, userID: number) => {
 	return async (dispatch: any) => {
 		try {
-			const data = await deleteVacationService(id);
+			const data = await deleteVacationService(vacationID, userID);
 			console.log('data from vacations actions = ', data);
 			dispatch(deleteVacationsAction(data));
 		} catch (ex) {

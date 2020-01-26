@@ -34,7 +34,7 @@ const VacChart: React.FC = (props: any) => {
 			}
 		]
 	};
-	if (vacationsData.length === 0 || followersData.length === 0) return <div>Loading...</div>;
+	if (!vacationsData.length || !followersData.length) return <div>Loading...</div>;
 	return (
 		<div>
 			<h1>Vacation Chart Data</h1>
@@ -43,7 +43,7 @@ const VacChart: React.FC = (props: any) => {
 				<Bar
 					data={data}
 					width={100}
-					height={300}
+					height={530}
 					options={{
 						maintainAspectRatio: false
 					}}

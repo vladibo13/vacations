@@ -7,7 +7,8 @@ const {
 	getAllVacationsQuery,
 	getLikedVacationsQuery,
 	addVacationQuery,
-	deleteVacationQuery
+	deleteVacationQuery,
+	updateVacationQuery
 } = require('./queries');
 const pool = require('../db/pool');
 
@@ -70,6 +71,12 @@ async function deleteVacation(id) {
 	const result = await pool.execute(query, payload);
 	return result;
 }
+async function updateVacation(description, destination, picture, from_date, to_date, cost, id) {
+	const query = updateVacationQuery();
+	const payload = [ description, destination, picture, from_date, to_date, cost, id ];
+	const result = await pool.execute(query, payload);
+	return result;
+}
 module.exports = {
 	saveUser,
 	isUserExist,
@@ -78,5 +85,6 @@ module.exports = {
 	getAllVacations,
 	getLikedVacations,
 	addVacation,
-	deleteVacation
+	deleteVacation,
+	updateVacation
 };

@@ -12,6 +12,8 @@ const vacationSchema = Joi.object({
 
 function vacationValidation(req, res, next) {
 	const { error } = vacationSchema.validate(req.body);
+	console.log('ERROR = ', error);
+	console.log('BODY = ', req.body);
 	if (error) return res.status(400).json({ msg: error.details[0].message });
 	next();
 }

@@ -8,6 +8,7 @@ import useCustomForm from '../../hooks/useCustomHook';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import moment from 'moment';
 
 function getModalStyle() {
 	const top = 50;
@@ -68,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-const VacModal: React.FC = () => {
+const VacModal: React.FC<any> = (props: any) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const [ open, setOpen ] = useState(false);
@@ -82,14 +83,12 @@ const VacModal: React.FC = () => {
 		all_followers: 0,
 		cost: 0
 	};
-
+	const { getVacations } = props;
 	const [ formData, setFormData ] = useCustomForm(initialState);
 	const handleClose = async () => {
 		try {
-			const result = await dispatch(addVacation(formData));
-			// await dispatch(getVacations());
-			console.log(result);
-
+			await dispatch(addVacation(formData));
+			await dispatch(getVacations());
 			setOpen(false);
 		} catch (ex) {
 			console.log(ex);

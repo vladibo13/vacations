@@ -2,7 +2,13 @@ const express = require('express');
 const pool = require('../db/pool');
 const router = express.Router();
 const { vacationValidation } = require('../validations/vacationValidation');
-const { getAllVacations, getLikedVacations, addVacation, deleteVacation } = require('../utils/queryHelpers');
+const {
+	getAllVacations,
+	getLikedVacations,
+	addVacation,
+	deleteVacation,
+	updateVacation
+} = require('../utils/queryHelpers');
 
 router.get('/', async (req, res, next) => {
 	try {
@@ -30,6 +36,7 @@ router.post('/filtred', async (req, res, next) => {
 });
 //add a vacation
 router.post('/', vacationValidation, async (req, res, next) => {
+	console.log('ADD VACATION ', req.body);
 	const { description, destination, picture, from_date, to_date, all_followers, cost } = req.body;
 	if (!destination || !description || !picture || !from_date || !to_date || !all_followers || !cost)
 		return res.status(400).json({ msg: 'all fields are mandatory' });
@@ -42,11 +49,14 @@ router.post('/', vacationValidation, async (req, res, next) => {
 });
 //delete vacation
 router.delete('/', async (req, res, next) => {
-	const { id } = req.body;
-	if (!id) return res.status(400).json({ msg: 'no id were provided ' });
+	const { userID, vacationID } = req.body;
+	console.log('HIT THE DELETE ', req.body);
+	// if (!id) return res.status(400).json({ msg: 'no id were provided ' });
+
+	// const validateLikedVacation = pool.execute('')
 
 	try {
-		const result = await deleteVacation(id);
+		const result = await deleteVacation(vacationID);
 		res.status(200).json({ msg: 'success delete', id: result[0].affectedRows + ' deleted' });
 	} catch (ex) {
 		res.status(400).json({ msg: ex });
@@ -57,10 +67,12 @@ router.put('/', async (req, res, next) => {
 	const { description, destination, picture, from_date, to_date, cost, id } = req.body;
 	console.log('HIT THE PUT REQUEST = ', req.body);
 	try {
-		const result = await pool.execute(
-			'UPDATE `vacations`.`vacation` SET description = ?, destination = ?, picture = ?, from_date = ?, to_date = ?, cost = ? WHERE id = ?',
-			[ description, destination, picture, from_date, to_date, cost, id ]
-		);
+		// const result = await pool.execute(
+		// 	'UPDATE `vacations`.`vacation` SET description = ?, destination = ?, picture = ?, from_date = ?, to_date = ?, cost = ? WHERE id = ?',
+		// 	[ description, destination, picture, from_date, to_date, cost, id ]
+		// );
+		// const vacations = await getAllVacations();
+		const result = await updateVacation(description, destination, picture, from_date, to_date, cost, id);
 		res.status(200).json({ msg: 'success', result });
 	} catch (ex) {
 		res.status(400).json({ msg: 'error update from server = ' + ex });

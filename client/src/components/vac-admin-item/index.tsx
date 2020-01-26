@@ -15,6 +15,10 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { IVacation } from '../../types';
 import Moment from 'react-moment';
 import Modal from '@material-ui/core/Modal';
+import VacModalAdmin from '../vac-modal-admin';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteVacation } from '../../redux/actions/vacationsAction';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -76,30 +80,31 @@ function getModalStyle() {
 }
 
 const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
-	const { destination, description, picture, cost, all_followers, id, from_date, to_date } = props;
+	const { getVacations, destination, description, picture, cost, all_followers, id, from_date, to_date } = props;
 	//init state for editing
 	const initialState = {
 		destination,
-		from_date,
-		to_date,
+		from_date: moment(from_date).format('YYYY-MM-DD hh:mm:ss'),
+		to_date: moment(to_date).format('YYYY-MM-DD hh:mm:ss'),
 		picture,
 		description,
 		all_followers,
 		cost,
 		id
 	};
-	//styling
 	const classes = useStyles();
-	//modal states
+	const dispatch = useDispatch();
+	const user = useSelector((state: any) => state.auth.user);
+	//modal
 	const [ modalStyle ] = useState(getModalStyle);
 	const [ openEdit, setOpenEdit ] = useState(false);
-	// form data handler for editing
 	const [ formData, setFormData ] = useCustomForm(initialState);
+
 	//modal functions
 	const handleClose = async () => {
 		try {
 			const data = await mainAxios.put('/vacations', { ...formData });
-			console.log('DATA === ', data);
+			await dispatch(getVacations());
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -109,9 +114,11 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 	const handleOpenEdit = (vac: IVacation) => {
 		setOpenEdit(true);
 	};
-	const handleDelete = async (id: any) => {
-		const result = await mainAxios.delete('/vacations', { data: { id } });
-		console.log('RESULT ====== ', result);
+	const handleDelete = async (vacationID: number, userID: number) => {
+		// const result = await mainAxios.delete('/vacations', { data: { id } });
+		await dispatch(deleteVacation(vacationID, userID));
+		await dispatch(getVacations());
+		// dispatch(getVacations());
 	};
 	const handleEditCloseNoData = () => {
 		setOpenEdit(false);
@@ -119,6 +126,7 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 
 	return (
 		<React.Fragment>
+			{/* <VacModalAdmin /> */}
 			<Modal
 				aria-labelledby="edit-modal-title"
 				aria-describedby="edit-modal-description"
@@ -209,20 +217,6 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 							value={formData.cost}
 						/>
 
-						{/* <TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							name="all_followers"
-							label="All Followers"
-							type="text"
-							id="all_followers"
-							autoComplete="all_followers"
-							onChange={setFormData}
-							value={formData.all_followers}
-						/> */}
-
 						<Button
 							onClick={handleClose}
 							type="button"
@@ -246,7 +240,7 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 						<Typography>{description}</Typography>
 					</CardContent>
 					<CardActions>
-						<Button onClick={() => handleDelete(id)} type="button" size="large" color="primary">
+						<Button onClick={() => handleDelete(id, user.id)} type="button" size="large" color="primary">
 							<DeleteIcon />
 						</Button>
 						<Button onClick={() => handleOpenEdit(props)} size="small" color="primary">
@@ -260,10 +254,3 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 };
 
 export default VacAdminItem;
-function formatDate(from: string) {
-	return (
-		<React.Fragment>
-			From: <Moment format="YYYY-MM-DD HH:mm">{from}</Moment>
-		</React.Fragment>
-	);
-}

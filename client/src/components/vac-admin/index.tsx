@@ -38,10 +38,12 @@ const VacAdmin: React.FC<IVacation> = () => {
 			{/* {user.role !== admin && <Redirect to="/login" />} */}
 
 			<Container className={classes.cardGrid} maxWidth="lg">
-				<VacModal />
+				<VacModal getVacations={getVacations} />
 				<h5>Add Vacation</h5>
 				<Grid container spacing={4}>
-					{vacations.map((vac: IVacation) => <VacAdminItem key={vac.id} {...vac} />)}
+					{vacations.map((vac: IVacation) => (
+						<VacAdminItem getVacations={getVacations} key={vac.id} {...vac} />
+					))}
 				</Grid>
 			</Container>
 		</div>

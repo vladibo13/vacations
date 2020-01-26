@@ -30,9 +30,11 @@ export default function vacationReducer(state = initialState, action: any) {
 		}
 
 		case Actions.DELETE_VACATION: {
+			console.log('ACTION PAYLOAD ======= ', action.payload);
 			return {
 				...state,
-				msgVacation: action.payload.msg
+				msgVacation: action.payload.msg,
+				...action.payload.vacations
 			};
 		}
 

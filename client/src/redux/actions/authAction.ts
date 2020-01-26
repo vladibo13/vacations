@@ -5,7 +5,7 @@ import { push } from 'react-router-redux';
 import { useHistory } from 'react-router-dom';
 
 export const registerUser = (user: object, history: any) => {
-	return async (dispatch: any) => {
+	return async (dispatch: Function) => {
 		try {
 			const data = await registerUserService(user);
 			if (data.msg === 'error') throw 'register failed';
@@ -53,7 +53,7 @@ export const logoutUser = () => {
 };
 
 export const verifyUser = () => {
-	return async (dispatch: any) => {
+	return async (dispatch: Function) => {
 		await dispatch(userLoadingAction());
 		console.log('auth action user info ');
 		const data = await verifyUserService();

@@ -56,9 +56,9 @@ export const getAllVacationsFiltredService = async (id: number) => {
 	}
 };
 
-export const deleteVacationService = async (id: number) => {
+export const deleteVacationService = async (vacationID: number, userID: number) => {
 	try {
-		const { data } = await mainAxios.delete('/vacations', { data: { id } });
+		const { data } = await mainAxios.delete('/vacations', { data: { vacationID, userID } });
 		return data;
 	} catch (ex) {
 		return { msg: ex };
@@ -78,6 +78,22 @@ export const getChartDataService = async () => {
 	try {
 		const { data } = await mainAxios.get('/chart');
 		return data;
+	} catch (ex) {
+		return { msg: ex };
+	}
+};
+
+export const followVacService = async (userID: number, vacationID: number) => {
+	try {
+		await mainAxios.post('/follow', { userID, vacationID });
+	} catch (ex) {
+		return { msg: ex };
+	}
+};
+
+export const deleteVacService = async (userID: number, vacationID: number) => {
+	try {
+		await mainAxios.delete('/follow', { data: { userID, vacationID } });
 	} catch (ex) {
 		return { msg: ex };
 	}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import mainAxios from '../../axios/mainAxios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -17,6 +17,7 @@ import Switch from '@material-ui/core/Switch';
 import Moment from 'react-moment';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import { IVacation } from '../../types/index';
+import { followVacService, deleteVacService } from '../../redux/service';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -50,24 +51,35 @@ const useStyles = makeStyles((theme: Theme) =>
 const VacMainItem: React.FC = (props: any) => {
 	useEffect(() => {
 		const initReq = async () => {
-			// const { data } = await mainAxios.post('/follow/switchChecker', { userID: user.id, vacationID: id });
-			// if (data.length) setChecked(true);
 			if (isSelected) setChecked(true);
 		};
 		initReq();
-		// if (isSelected) setChecked(true);
 	}, []);
 
 	const classes = useStyles();
-	const { id, destination, from_date, to_date, picture, description, all_followers, cost, isSelected } = props;
+	const {
+		getVacations,
+		id,
+		destination,
+		from_date,
+		to_date,
+		picture,
+		description,
+		all_followers,
+		cost,
+		isSelected
+	} = props;
 	const [ checked, setChecked ] = useState<boolean>(false);
 	const user = useSelector((state: any) => state.auth.user);
+	const dispatch = useDispatch();
 
 	const toggleChecked = async () => {
 		if (!checked) {
-			const { data } = await mainAxios.post('/follow', { userID: user.id, vacationID: id });
+			await followVacService(user.id, id);
+			await dispatch(getVacations(user.id));
 		} else {
-			const { data } = await mainAxios.delete('/follow', { data: { userID: user.id, vacationID: id } });
+			await deleteVacService(user.id, id);
+			await dispatch(getVacations(user.id));
 		}
 		setChecked((prev: boolean) => !prev);
 	};

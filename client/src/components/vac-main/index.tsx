@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-const VacMain: React.FC = (props: any) => {
+const VacMain: React.FC = () => {
 	useEffect(() => {
 		const initReq = async () => {
 			try {
@@ -54,18 +54,15 @@ const VacMain: React.FC = (props: any) => {
 
 	const classes = useStyles();
 	const vacations = useSelector((state: any) => state.vacation.vacations);
-	// const likedVacations = useSelector((state: any) => state.vacation.likedVacations);
 	const user = useSelector((state: any) => state.auth.user);
-	const status = useSelector((state: any) => state.auth.status);
 	const dispatch = useDispatch();
-	console.log('VACATIONS ============ ', vacations);
 
 	if (!vacations.length) return <p>Loading...</p>;
 	return (
 		<Container className={classes.cardGrid} maxWidth="lg">
 			<Grid container spacing={4}>
 				{vacations.sort((x: any, y: any): number => y.isSelected - x.isSelected).map((vac: IVacation) => {
-					return <VacMainItem key={vac.id} {...vac} />;
+					return <VacMainItem getVacations={getVacationsFiltred} key={vac.id} {...vac} />;
 				})}
 			</Grid>
 		</Container>

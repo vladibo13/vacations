@@ -8,6 +8,7 @@ export interface IVacation {
 	all_followers?: number;
 	cost: number;
 	isSelected: boolean;
+	getVacations: Function;
 }
 
 export interface IUser {
