@@ -48,7 +48,7 @@ async function addOne(req, res, next) {
 }
 
 async function removeOne(req, res, next) {
-	const { userID, vacationID } = req.body;
+	const { vacationID } = req.body;
 	try {
 		const resultVacFol = await getVacationFromFollowersByID(vacationID);
 		if (resultVacFol.length) await deleteVacationFromFollowersByID(vacationID);

@@ -10,12 +10,29 @@ const vacationSchema = Joi.object({
 	all_followers: Joi.number().required()
 });
 
+const vacationIDSchema = Joi.object({
+	vacationID: Joi.number().required()
+});
+
+const userIDSchema = Joi.object({
+	userID: Joi.number().required()
+});
+
 function vacationValidation(req, res, next) {
 	const { error } = vacationSchema.validate(req.body);
-	console.log('ERROR = ', error);
-	console.log('BODY = ', req.body);
 	if (error) return res.status(400).json({ msg: error.details[0].message });
 	next();
 }
 
-module.exports = { vacationValidation };
+function vacationIDValidation(req, res, next) {
+	const { error } = vacationIDSchema.validate(req.body);
+	if (error) return res.status(400).json({ msg: error.details[0].message });
+	next();
+}
+function userIDValidation(req, res, next) {
+	const { error } = userIDSchema.validate(req.body);
+	if (error) return res.status(400).json({ msg: error.details[0].message });
+	next();
+}
+
+module.exports = { vacationValidation, vacationIDValidation, userIDValidation };

@@ -40,10 +40,10 @@ export const getVacationsFiltred = (id: number) => {
 	};
 };
 
-export const deleteVacation = (vacationID: number, userID: number) => {
+export const deleteVacation = (vacationID: number) => {
 	return async (dispatch: Function) => {
 		try {
-			const data = await deleteVacationService(vacationID, userID);
+			const data = await deleteVacationService(vacationID);
 			dispatch({
 				type: Actions.DELETE_VACATION,
 				payload: data

@@ -1,6 +1,9 @@
 function getUserExistQuery() {
 	return 'SELECT * FROM `vacations`.`users` WHERE email = ?';
 }
+function getUserByIDQuery() {
+	return 'SELECT * FROM `vacations`.`followers` WHERE user_id = ? AND vacation_id = ?';
+}
 function getUserInsertionQuery() {
 	return 'INSERT INTO `vacations`.`users` (`firstname`, `lastname`, `email`, `password`) VALUES (?,?,?,?)';
 }
@@ -34,6 +37,18 @@ function getVacationByIDQuery() {
 function deleteVacationFromFollowersByIDQuery(id) {
 	return 'DELETE FROM `vacations`.`followers` WHERE vacation_id = ?';
 }
+function createFollowerQuery() {
+	return 'INSERT INTO `vacations`.`followers` (`user_id`, `vacation_id`) VALUES (?,?)';
+}
+function addToFollowCountQuery() {
+	return 'UPDATE `vacations`.`vacation` set all_followers = all_followers + 1 WHERE id = ?';
+}
+function removeFromFollowCountQuery() {
+	return 'UPDATE `vacations`.`vacation` set all_followers = all_followers - 1 WHERE id = ?';
+}
+function removeFollowerByIDQuery() {
+	return 'DELETE FROM `vacations`.`followers` WHERE user_id = ? and vacation_id = ?';
+}
 module.exports = {
 	getUserExistQuery,
 	getUserInsertionQuery,
@@ -42,9 +57,14 @@ module.exports = {
 	getUserChartsQuery,
 	getAllVacationsQuery,
 	getLikedVacationsQuery,
+	getUserByIDQuery,
 	addVacationQuery,
 	deleteVacationQuery,
 	updateVacationQuery,
 	getVacationByIDQuery,
-	deleteVacationFromFollowersByIDQuery
+	deleteVacationFromFollowersByIDQuery,
+	createFollowerQuery,
+	addToFollowCountQuery,
+	removeFromFollowCountQuery,
+	removeFollowerByIDQuery
 };

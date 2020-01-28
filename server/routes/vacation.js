@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { vacationValidation } = require('../validations/vacationValidation');
+const { vacationValidation, vacationIDValidation, userIDValidation } = require('../validations/vacationValidation');
 const vacationController = require('../controllers/vacationController');
 
 router
@@ -8,8 +8,8 @@ router
 	.get(vacationController.getAll)
 	.post(vacationValidation, vacationController.addOne)
 	.put(vacationController.updateOne)
-	.delete(vacationController.removeOne);
+	.delete(vacationIDValidation, vacationController.removeOne);
 
-router.route('/filtred').post(vacationController.getAllFiltred);
+router.route('/filtred').post(userIDValidation, vacationController.getAllFiltred);
 
 module.exports = router;

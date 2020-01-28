@@ -11,12 +11,16 @@ const {
 	updateVacationQuery,
 	getVacationByID,
 	deleteVacationFromFollowersByIDQuery,
-	getVacationByIDQuery
+	getVacationByIDQuery,
+	getUserByIDQuery,
+	createFollowerQuery,
+	addToFollowCountQuery,
+	removeFromFollowCountQuery,
+	removeFollowerByIDQuery
 } = require('./queries');
 const pool = require('../db/pool');
 
 async function saveUser(user) {
-	console.log(user);
 	const { email, password, firstname, lastname } = user;
 	const query = getUserInsertionQuery();
 	const payload = [ firstname, lastname, email, password ];
@@ -29,7 +33,6 @@ async function isUserExist(email, password = null) {
 	const payload = password ? [ email, password ] : [ email ];
 	const [ result ] = await pool.execute(query, payload);
 	const [ firstUser ] = result;
-	console.log(firstUser);
 	return firstUser;
 }
 
@@ -95,6 +98,37 @@ async function deleteVacationFromFollowersByID(id) {
 	return result;
 }
 
+async function getFollowExist(userID, vacationID) {
+	const query = getUserByIDQuery();
+	const payload = [ userID, vacationID ];
+	const [ ifExistFollower ] = await pool.execute(query, payload);
+	const [ result ] = ifExistFollower;
+	return result;
+}
+async function createFollowVacation(userID, vacationID) {
+	const query = createFollowerQuery();
+	const payload = [ userID, vacationID ];
+	const createFollow = await pool.execute(query, payload);
+	return createFollow;
+}
+async function addToFollowCount(vacationID) {
+	const query = addToFollowCountQuery();
+	const payload = [ vacationID ];
+	const addToFollow = await pool.execute(query, payload);
+	return addToFollow;
+}
+async function removeFromFollowCount(vacationID) {
+	const query = removeFromFollowCountQuery();
+	const payload = [ vacationID ];
+	const removeFromFollow = await pool.execute(query, payload);
+	return removeFromFollow;
+}
+async function removeFollowerByID(userID, vacationID) {
+	const query = removeFollowerByIDQuery();
+	const payload = [ userID, vacationID ];
+	const removeFollowerByID = await pool.execute(query, payload);
+	return removeFollowerByID;
+}
 module.exports = {
 	saveUser,
 	isUserExist,
@@ -106,5 +140,10 @@ module.exports = {
 	deleteVacation,
 	updateVacation,
 	getVacationFromFollowersByID,
-	deleteVacationFromFollowersByID
+	deleteVacationFromFollowersByID,
+	getFollowExist,
+	createFollowVacation,
+	addToFollowCount,
+	removeFromFollowCount,
+	removeFollowerByID
 };

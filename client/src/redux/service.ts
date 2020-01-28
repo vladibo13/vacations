@@ -46,9 +46,9 @@ export const getAllVacationsFiltredService = async (id: number) => {
 	}
 };
 
-export const deleteVacationService = async (vacationID: number, userID: number) => {
+export const deleteVacationService = async (vacationID: number) => {
 	try {
-		const { data } = await mainAxios.delete('/vacations', { data: { vacationID, userID } });
+		const { data } = await mainAxios.delete('/vacations', { data: { vacationID } });
 		return data;
 	} catch (ex) {
 		return { msg: ex };

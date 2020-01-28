@@ -116,8 +116,8 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 	const handleOpenEdit = (vac: IVacation) => {
 		setOpenEdit(true);
 	};
-	const handleDelete = async (vacationID: number, userID: number) => {
-		await dispatch(deleteVacation(vacationID, userID));
+	const handleDelete = async (vacationID: number) => {
+		await dispatch(deleteVacation(vacationID));
 		// await dispatch(getVacations());
 	};
 	const handleEditCloseNoData = () => {
@@ -240,7 +240,7 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 						<Typography>{description}</Typography>
 					</CardContent>
 					<CardActions>
-						<Button onClick={() => handleDelete(id, user.id)} type="button" size="large" color="primary">
+						<Button onClick={() => handleDelete(id)} type="button" size="large" color="primary">
 							<DeleteIcon />
 						</Button>
 						<Button onClick={() => handleOpenEdit(props)} size="small" color="primary">
