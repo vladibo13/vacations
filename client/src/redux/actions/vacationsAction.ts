@@ -12,6 +12,7 @@ import { returnErrors, clearErrors } from './errorAction';
 
 export const getVacations = () => {
 	return async (dispatch: Function) => {
+		dispatch({ type: Actions.VACATIONS_LOADING });
 		try {
 			const data = await getAllVacationsService();
 			dispatch({
@@ -25,7 +26,8 @@ export const getVacations = () => {
 };
 
 export const getVacationsFiltred = (id: number) => {
-	return async (dispatch: any) => {
+	return async (dispatch: Function) => {
+		dispatch({ type: Actions.VACATIONS_LOADING });
 		try {
 			const data = await getAllVacationsFiltredService(id);
 			dispatch({
@@ -33,13 +35,13 @@ export const getVacationsFiltred = (id: number) => {
 				payload: data
 			});
 		} catch (ex) {
-			console.log(ex);
+			dispatch(returnErrors(ex));
 		}
 	};
 };
 
 export const deleteVacation = (vacationID: number, userID: number) => {
-	return async (dispatch: any) => {
+	return async (dispatch: Function) => {
 		try {
 			const data = await deleteVacationService(vacationID, userID);
 			dispatch({
@@ -53,7 +55,7 @@ export const deleteVacation = (vacationID: number, userID: number) => {
 };
 
 export const addVacation = (vac: object) => {
-	return async (dispatch: any) => {
+	return async (dispatch: Function) => {
 		try {
 			const data = await addVacationService(vac);
 			dispatch({
@@ -69,7 +71,7 @@ export const addVacation = (vac: object) => {
 export const updateVacation = (formData: object) => {
 	return async (dispatch: Function) => {
 		try {
-			const { data } = await updateVacationService(formData);
+			const data = await updateVacationService(formData);
 			dispatch({
 				type: Actions.UPDATE_VACATION,
 				payload: data
@@ -107,7 +109,7 @@ export const followVacation = (userID: number, vacationID: number) => {
 export const unfollowVacation = (userID: number, vacationID: number) => {
 	return async (dispatch: Function) => {
 		try {
-			const data = await unfollowVacation(userID, vacationID);
+			const data = await unfollowVacationService(userID, vacationID);
 			dispatch({
 				type: Actions.UNFOLLOW_VACATION,
 				payload: data

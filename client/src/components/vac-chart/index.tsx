@@ -3,6 +3,7 @@ import { Bar } from 'react-chartjs-2';
 import mainAxios from '../../axios/mainAxios';
 import { getChart } from '../../redux/actions/chartAction';
 import { useDispatch, useSelector } from 'react-redux';
+import VacLoader from '../vac-loader';
 
 const VacChart: React.FC = (props: any) => {
 	const [ destinations, setDestinations ] = useState([]);
@@ -34,7 +35,7 @@ const VacChart: React.FC = (props: any) => {
 			}
 		]
 	};
-	if (!vacationsData.length || !followersData.length) return <div>Loading...</div>;
+	if (!vacationsData.length || !followersData.length) return <VacLoader />;
 	return (
 		<div>
 			<h1>Vacation Chart Data</h1>

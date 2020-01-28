@@ -2,7 +2,8 @@ import Actions from '../actions/action.config';
 
 const initialState = {
 	vacationsData: [],
-	followersData: []
+	followersData: [],
+	isLoading: false
 };
 
 export default function vacationReducer(state = initialState, action: any) {
@@ -12,7 +13,15 @@ export default function vacationReducer(state = initialState, action: any) {
 			return {
 				...state,
 				vacationsData: action.payload.destinations,
-				followersData: action.payload.followers
+				followersData: action.payload.followers,
+				isLoading: false
+			};
+		}
+
+		case Actions.CHART_LOADING: {
+			return {
+				...state,
+				isLoading: true
 			};
 		}
 

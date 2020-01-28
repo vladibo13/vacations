@@ -4,7 +4,7 @@ import { registerUserService, loginUserService, verifyUserService } from '../ser
 import { push } from 'react-router-redux';
 import { useHistory } from 'react-router-dom';
 
-export const registerUser = (user: object, history: any) => {
+export const registerUser = (user: object, history: Array<any>) => {
 	return async (dispatch: Function) => {
 		try {
 			const data = await registerUserService(user);
@@ -22,7 +22,7 @@ export const registerUser = (user: object, history: any) => {
 	};
 };
 
-export const loginUser = (user: object, history: any) => {
+export const loginUser = (user: object, history: Array<any>) => {
 	return async (dispatch: any) => {
 		try {
 			console.log('auth action user info ', user);
@@ -32,7 +32,7 @@ export const loginUser = (user: object, history: any) => {
 			dispatch(loginUserAction(data));
 			const token = localStorage.getItem('token');
 			if (data.msg === 'redirect' && token) {
-				history.push('/');
+				history.push('/main');
 				return;
 			}
 		} catch (ex) {

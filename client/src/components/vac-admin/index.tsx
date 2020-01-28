@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container';
 import VacAdminItem from '../vac-admin-item';
 import VacModal from '../vac-modal';
 import { IVacation } from '../../types/index';
+import VacLoader from '../vac-loader';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -30,9 +31,10 @@ const VacAdmin: React.FC<IVacation> = () => {
 	}, []);
 	const dispatch = useDispatch();
 	const vacations = useSelector((state: any) => state.vacation.vacations);
+	const isLoading = useSelector((state: any) => state.vacation.isLoading);
 	const classes = useStyles();
 
-	if (!vacations.length) return <p>Loading...</p>;
+	if (isLoading) return <VacLoader />;
 	return (
 		<div>
 			{/* {user.role !== admin && <Redirect to="/login" />} */}

@@ -1,7 +1,6 @@
 function getUserExistQuery() {
 	return 'SELECT * FROM `vacations`.`users` WHERE email = ?';
 }
-
 function getUserInsertionQuery() {
 	return 'INSERT INTO `vacations`.`users` (`firstname`, `lastname`, `email`, `password`) VALUES (?,?,?,?)';
 }
@@ -11,11 +10,9 @@ function getUserPasswordExistQuery() {
 function gethashedPasswordQuery() {
 	return 'SELECT password FROM `vacations`.`users` WHERE email = ? ';
 }
-
 function getUserChartsQuery() {
 	return 'SELECT destination,all_followers FROM `vacations`.`vacation`';
 }
-
 function getAllVacationsQuery() {
 	return 'select * from vacations.vacation';
 }
@@ -31,6 +28,12 @@ function deleteVacationQuery() {
 function updateVacationQuery() {
 	return 'UPDATE `vacations`.`vacation` SET description = ?, destination = ?, picture = ?, from_date = ?, to_date = ?, cost = ? WHERE id = ?';
 }
+function getVacationByIDQuery() {
+	return 'SELECT * FROM `vacations`.`followers` WHERE vacation_id = ?';
+}
+function deleteVacationFromFollowersByIDQuery(id) {
+	return 'DELETE FROM `vacations`.`followers` WHERE vacation_id = ?';
+}
 module.exports = {
 	getUserExistQuery,
 	getUserInsertionQuery,
@@ -41,5 +44,7 @@ module.exports = {
 	getLikedVacationsQuery,
 	addVacationQuery,
 	deleteVacationQuery,
-	updateVacationQuery
+	updateVacationQuery,
+	getVacationByIDQuery,
+	deleteVacationFromFollowersByIDQuery
 };

@@ -88,7 +88,7 @@ const VacModal: React.FC<any> = (props: any) => {
 	const handleClose = async () => {
 		try {
 			await dispatch(addVacation(formData));
-			await dispatch(getVacations());
+			// await dispatch(getVacations());
 			setOpen(false);
 		} catch (ex) {
 			console.log(ex);

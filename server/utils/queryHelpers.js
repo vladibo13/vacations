@@ -8,7 +8,10 @@ const {
 	getLikedVacationsQuery,
 	addVacationQuery,
 	deleteVacationQuery,
-	updateVacationQuery
+	updateVacationQuery,
+	getVacationByID,
+	deleteVacationFromFollowersByIDQuery,
+	getVacationByIDQuery
 } = require('./queries');
 const pool = require('../db/pool');
 
@@ -77,6 +80,21 @@ async function updateVacation(description, destination, picture, from_date, to_d
 	const result = await pool.execute(query, payload);
 	return result;
 }
+async function getVacationFromFollowersByID(id) {
+	const query = getVacationByIDQuery();
+	const payload = [ id ];
+	const result = await pool.execute(query, payload);
+	const [ first ] = result;
+	return first;
+}
+
+async function deleteVacationFromFollowersByID(id) {
+	const query = deleteVacationFromFollowersByIDQuery();
+	const payload = [ id ];
+	const result = await pool.execute(query, payload);
+	return result;
+}
+
 module.exports = {
 	saveUser,
 	isUserExist,
@@ -86,5 +104,7 @@ module.exports = {
 	getLikedVacations,
 	addVacation,
 	deleteVacation,
-	updateVacation
+	updateVacation,
+	getVacationFromFollowersByID,
+	deleteVacationFromFollowersByID
 };

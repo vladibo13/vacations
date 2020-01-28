@@ -8,6 +8,8 @@ import Container from '@material-ui/core/Container';
 import VacMainItem from '../vac-main-item';
 import { IVacation } from '../../types/index';
 import mainAxios from '../../axios/mainAxios';
+import VacLoader from '../vac-loader';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -34,6 +36,9 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		avatar: {
 			backgroundColor: red[500]
+		},
+		heading: {
+			marginBottom: '3rem'
 		}
 	})
 );
@@ -54,12 +59,16 @@ const VacMain: React.FC = () => {
 
 	const classes = useStyles();
 	const vacations = useSelector((state: any) => state.vacation.vacations);
+	const isLoading = useSelector((state: any) => state.vacation.isLoading);
 	const user = useSelector((state: any) => state.auth.user);
 	const dispatch = useDispatch();
 
-	if (!vacations.length) return <p>Loading...</p>;
+	if (isLoading) return <VacLoader />;
 	return (
 		<Container className={classes.cardGrid} maxWidth="lg">
+			<Typography className={classes.heading} variant="h5" component="h5" gutterBottom align="center">
+				Welcome To Vacation User: {user.firstname} {user.lastname}
+			</Typography>
 			<Grid container spacing={4}>
 				{vacations.sort((x: any, y: any): number => y.isSelected - x.isSelected).map((vac: IVacation) => {
 					return <VacMainItem getVacations={getVacationsFiltred} key={vac.id} {...vac} />;

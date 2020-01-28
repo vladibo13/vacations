@@ -3,9 +3,7 @@ import mainAxios from '../axios/mainAxios';
 
 export const registerUserService = async (user: any) => {
 	try {
-		console.log('user from service =  ', user);
 		const { data } = await mainAxios.post('/auth/register', user);
-		console.log('data from service ', data);
 		return data;
 	} catch (ex) {
 		return { msg: 'error' };
@@ -14,9 +12,7 @@ export const registerUserService = async (user: any) => {
 
 export const loginUserService = async (user: any) => {
 	try {
-		console.log('user from service =  ', user);
 		const { data } = await mainAxios.post('/auth/login', user);
-		console.log('data from service ', data);
 		return data;
 	} catch (ex) {
 		return { msg: 'error' };
@@ -25,9 +21,7 @@ export const loginUserService = async (user: any) => {
 
 export const verifyUserService = async () => {
 	try {
-		console.log('user from service =  ');
 		const { data } = await mainAxios.get('/auth/verify');
-		console.log('data from service ', data);
 		return data;
 	} catch (ex) {
 		return { msg: 'error' };
@@ -36,9 +30,7 @@ export const verifyUserService = async () => {
 
 export const getAllVacationsService = async () => {
 	try {
-		console.log('user from service =  ');
 		const { data } = await mainAxios.get('/vacations');
-		console.log('data from service ', data);
 		return data;
 	} catch (ex) {
 		return { msg: ex };
@@ -47,9 +39,7 @@ export const getAllVacationsService = async () => {
 
 export const getAllVacationsFiltredService = async (id: number) => {
 	try {
-		console.log('id from service =  ', id);
 		const { data } = await mainAxios.post('/vacations/filtred', { userID: id });
-		console.log('getAllVacationsFiltredService service = ', data);
 		return data;
 	} catch (ex) {
 		return { msg: ex };

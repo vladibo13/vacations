@@ -95,6 +95,7 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const user = useSelector((state: any) => state.auth.user);
+
 	//modal
 	const [ modalStyle ] = useState(getModalStyle);
 	const [ openEdit, setOpenEdit ] = useState(false);
@@ -105,7 +106,7 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 		try {
 			// const data = await mainAxios.put('/vacations', { ...formData });
 			await dispatch(updateVacation(formData));
-			await dispatch(getVacations());
+			// await dispatch(getVacations());
 		} catch (ex) {
 			console.log(ex);
 		}
@@ -116,10 +117,8 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 		setOpenEdit(true);
 	};
 	const handleDelete = async (vacationID: number, userID: number) => {
-		// const result = await mainAxios.delete('/vacations', { data: { id } });
 		await dispatch(deleteVacation(vacationID, userID));
-		await dispatch(getVacations());
-		// dispatch(getVacations());
+		// await dispatch(getVacations());
 	};
 	const handleEditCloseNoData = () => {
 		setOpenEdit(false);

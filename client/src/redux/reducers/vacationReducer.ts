@@ -3,7 +3,8 @@ import Actions from '../actions/action.config';
 const initialState = {
 	vacations: [],
 	likedVacations: [],
-	msgVacation: ''
+	msgVacation: '',
+	isLoading: false
 };
 
 export default function vacationReducer(state = initialState, action: any) {
@@ -11,44 +12,57 @@ export default function vacationReducer(state = initialState, action: any) {
 		case Actions.GET_VACATIONS: {
 			return {
 				...state,
-				vacations: action.payload.vacations
+				vacations: action.payload.vacations,
+				isLoading: false
+			};
+		}
+
+		case Actions.VACATIONS_LOADING: {
+			return {
+				...state,
+				isLoading: true
 			};
 		}
 
 		case Actions.GET_LIKED_VACATIONS: {
 			return {
 				...state,
-				vacations: action.payload.vacations
+				vacations: action.payload.vacations,
+				isLoading: false
 			};
 		}
 
 		case Actions.CLEAR_VACATIONS: {
 			return {
 				...state,
-				vacations: []
+				vacations: [],
+				isLoading: false,
+				msgVacation: ''
 			};
 		}
 
 		case Actions.DELETE_VACATION: {
-			console.log('ACTION PAYLOAD ======= ', action.payload);
+			console.log('PAYLOAD = ', action.payload);
 			return {
 				...state,
 				msgVacation: action.payload.msg,
-				...action.payload.vacations
+				vacations: action.payload.vacations
 			};
 		}
 
 		case Actions.ADD_VACATION: {
 			return {
 				...state,
-				msgVacation: action.payload.msg
+				msgVacation: action.payload.msg,
+				vacations: action.payload.vacations
 			};
 		}
 
 		case Actions.UPDATE_VACATION: {
 			return {
 				...state,
-				msgVacation: action.payload.msg
+				msgVacation: action.payload.msg,
+				vacations: action.payload.vacations
 			};
 		}
 

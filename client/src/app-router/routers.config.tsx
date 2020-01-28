@@ -6,8 +6,11 @@ import VacMain from '../components/vac-main';
 import VacAdmin from '../components/vac-admin';
 import VacChart from '../components/vac-chart';
 import { withAuth } from '../hoc/auth';
+import { Redirect } from 'react-router-dom';
+// { exact: true, isVisible: true, title: 'Log In', path: '/login', component: VacLogin }
 
 export const routes = [
+	{ exact: true, isVisible: true, title: 'Home', path: '/', component: () => <Redirect to="/register" /> },
 	{ exact: true, isVisible: true, title: 'Log In', path: '/login', component: VacLogin },
 	{ exact: true, isVisible: true, title: 'Register', path: '/register', component: VacRegister },
 	{
@@ -15,7 +18,7 @@ export const routes = [
 		isVisible: true,
 		title: 'Home',
 		path: '/',
-		component: (props: any) => {
+		component: (props: object) => {
 			const HomeWithAuth = withAuth(VacHome);
 			return <HomeWithAuth {...props} />;
 		}
@@ -25,7 +28,7 @@ export const routes = [
 		isVisible: true,
 		title: 'Main Page',
 		path: '/main',
-		component: (props: any) => {
+		component: (props: object) => {
 			const MainWithAuth = withAuth(VacMain);
 			return <MainWithAuth {...props} />;
 		}
@@ -35,7 +38,7 @@ export const routes = [
 		isVisible: true,
 		title: 'Admin Page',
 		path: '/admin',
-		component: (props: any) => {
+		component: (props: object) => {
 			const AdminWithAuth = withAuth(VacAdmin, true);
 			return <AdminWithAuth {...props} />;
 		}
@@ -45,7 +48,7 @@ export const routes = [
 		isVisible: true,
 		title: 'Chart Page',
 		path: '/chart',
-		component: (props: any) => {
+		component: (props: object) => {
 			const ChartWithAuth = withAuth(VacChart, true);
 			return <ChartWithAuth {...props} />;
 		}

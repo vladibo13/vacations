@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import mainAxios from '../../axios/mainAxios';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -17,7 +16,7 @@ import Switch from '@material-ui/core/Switch';
 import Moment from 'react-moment';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import { IVacation } from '../../types/index';
-import { followVacationService, unfollowVacationService } from '../../redux/service';
+import { followVacation, unfollowVacation } from '../../redux/actions/vacationsAction';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -75,11 +74,9 @@ const VacMainItem: React.FC = (props: any) => {
 
 	const toggleChecked = async () => {
 		if (!checked) {
-			await followVacationService(user.id, id);
-			// await dispatch(getVacations(user.id));
+			await dispatch(followVacation(user.id, id));
 		} else {
-			await unfollowVacationService(user.id, id);
-			// await dispatch(getVacations(user.id));
+			await dispatch(unfollowVacation(user.id, id));
 		}
 		setChecked((prev: boolean) => !prev);
 	};

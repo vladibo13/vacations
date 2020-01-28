@@ -5,10 +5,13 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
+			height: '85vh',
 			display: 'flex',
-			'& > * + *': {
-				marginLeft: theme.spacing(2)
-			}
+			flexDirection: 'column',
+			alignItems: 'center'
+		},
+		loader: {
+			marginTop: theme.spacing(40)
 		}
 	})
 );
@@ -18,8 +21,7 @@ const VacLoader: React.FC = () => {
 
 	return (
 		<div className={classes.root}>
-			<CircularProgress />
-			<CircularProgress color="secondary" />
+			<CircularProgress className={classes.loader} size="8rem" />
 		</div>
 	);
 };

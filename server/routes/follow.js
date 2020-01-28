@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db/pool');
+const { getAllVacations } = require('../utils/queryHelpers');
 
 router.get('/', async (req, res, next) => {
 	const result = await pool.execute('select firstname from vacations.users');
@@ -30,6 +31,7 @@ router.post('/', async (req, res, next) => {
 			'UPDATE `vacations`.`vacation` set all_followers = all_followers + 1 WHERE id = ?',
 			[ vacationID ]
 		);
+
 		res.status(200).json({
 			msg: 'success post',
 			resuaffectedRows: resultQuery[0].affectedRows,
