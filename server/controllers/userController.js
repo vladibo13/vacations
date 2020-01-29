@@ -29,7 +29,7 @@ async function login(req, res, next) {
 		const passwordCheck = await compareHashPassword(password, hashedPassword.password);
 		if (!passwordCheck) return res.status(400).json({ msg: 'password incorrect' });
 		const jwtToken = await getJwt({ ...user, password: null });
-		res.json({ msg: 'redirect', token: jwtToken });
+		res.json({ msg: 'redirect', token: jwtToken, redirect: true });
 	} catch (ex) {
 		res.status(400).json({ error: ex });
 	}

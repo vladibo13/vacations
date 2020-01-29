@@ -3,21 +3,21 @@ import mainAxios from '../../axios/mainAxios';
 import { registerUserService, loginUserService, verifyUserService } from '../service';
 import { push } from 'react-router-redux';
 import { useHistory } from 'react-router-dom';
+import { returnErrors, clearErrors } from './errorAction';
 
 export const registerUser = (user: object, history: Array<any>) => {
 	return async (dispatch: Function) => {
 		try {
 			const data = await registerUserService(user);
-			if (data.msg === 'error') throw 'register failed';
 			dispatch(registerUserAction(data));
 
-			if (data.msg === 'redirect') {
+			if (data.msg === 'redirect' && data.redirect) {
 				history.push('/login');
 				return;
 			}
 		} catch (ex) {
 			console.log('error from register = ', ex);
-			dispatch(authUserErrorAction(ex));
+			dispatch(returnErrors(ex.response.statusText, ex.response.status));
 		}
 	};
 };
@@ -25,19 +25,15 @@ export const registerUser = (user: object, history: Array<any>) => {
 export const loginUser = (user: object, history: Array<any>) => {
 	return async (dispatch: any) => {
 		try {
-			console.log('auth action user info ', user);
 			const data = await loginUserService(user);
-			if (data.msg === 'error') throw 'login failed';
-			console.log('data from auth action ', data);
 			dispatch(loginUserAction(data));
 			const token = localStorage.getItem('token');
-			if (data.msg === 'redirect' && token) {
+			if (data.msg === 'redirect' && token && data.redirect) {
 				history.push('/main');
 				return;
 			}
 		} catch (ex) {
-			console.log('auth login error ');
-			dispatch(authUserErrorAction(ex));
+			dispatch(returnErrors(ex.response.statusText, ex.response.status));
 		}
 	};
 };
@@ -46,19 +42,22 @@ export const logoutUser = () => {
 	return async (dispatch: any) => {
 		try {
 			dispatch(logoutUserAction());
+			dispatch(clearErrors());
 		} catch (ex) {
-			dispatch(authUserErrorAction(ex));
+			dispatch(returnErrors(ex.response.statusText, ex.response.status));
 		}
 	};
 };
 
 export const verifyUser = () => {
 	return async (dispatch: Function) => {
-		await dispatch(userLoadingAction());
-		console.log('auth action user info ');
-		const data = await verifyUserService();
-		console.log('data from auth action ', data);
-		dispatch(verifyUserAction(data));
+		try {
+			await dispatch(userLoadingAction());
+			const data = await verifyUserService();
+			dispatch(verifyUserAction(data));
+		} catch (ex) {
+			dispatch(returnErrors(ex.response.statusText, ex.response.status));
+		}
 	};
 };
 export const logoutUserAction = () => ({

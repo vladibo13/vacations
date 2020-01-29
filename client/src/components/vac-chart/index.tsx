@@ -4,23 +4,23 @@ import mainAxios from '../../axios/mainAxios';
 import { getChart } from '../../redux/actions/chartAction';
 import { useDispatch, useSelector } from 'react-redux';
 import VacLoader from '../vac-loader';
+import VacError from '../vac-error';
 
 const VacChart: React.FC = (props: any) => {
 	const [ destinations, setDestinations ] = useState([]);
 	const [ followers, setFollowers ] = useState([]);
 	const vacationsData = useSelector((state: any) => state.chart.vacationsData);
 	const followersData = useSelector((state: any) => state.chart.followersData);
+	const errorMsg = useSelector((state: any) => state.error.msg);
+	const errorStatus = useSelector((state: any) => state.error.status);
 	const dispatch = useDispatch();
 	useEffect(() => {
 		const initReq = async () => {
-			// const result = await mainAxios.get('/chart');
-			// setDestinations(result.data.destinations);
-			// setFollowers(result.data.followers);
-
 			await dispatch(getChart());
 		};
 		initReq();
 	}, []);
+
 	const data = {
 		labels: vacationsData,
 		datasets: [
@@ -35,7 +35,8 @@ const VacChart: React.FC = (props: any) => {
 			}
 		]
 	};
-	if (!vacationsData.length || !followersData.length) return <VacLoader />;
+	if (errorMsg) return <VacError errorMsg={errorMsg} errorStatus={errorStatus} />;
+	if (!vacationsData || !followersData) return <VacLoader />;
 	return (
 		<div>
 			<h1>Vacation Chart Data</h1>

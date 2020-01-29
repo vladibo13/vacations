@@ -8,6 +8,7 @@ import VacAdminItem from '../vac-admin-item';
 import VacModal from '../vac-modal';
 import { IVacation } from '../../types/index';
 import VacLoader from '../vac-loader';
+import VacError from '../vac-error';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -32,8 +33,11 @@ const VacAdmin: React.FC<IVacation> = () => {
 	const dispatch = useDispatch();
 	const vacations = useSelector((state: any) => state.vacation.vacations);
 	const isLoading = useSelector((state: any) => state.vacation.isLoading);
+	const errorMsg = useSelector((state: any) => state.error.msg);
+	const errorStatus = useSelector((state: any) => state.error.status);
 	const classes = useStyles();
 
+	if (errorMsg) return <VacError errorMsg={errorMsg} errorStatus={errorStatus} />;
 	if (isLoading) return <VacLoader />;
 	return (
 		<div>

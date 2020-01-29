@@ -10,6 +10,7 @@ import { IVacation } from '../../types/index';
 import mainAxios from '../../axios/mainAxios';
 import VacLoader from '../vac-loader';
 import Typography from '@material-ui/core/Typography';
+import VacError from '../vac-error';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -61,8 +62,11 @@ const VacMain: React.FC = () => {
 	const vacations = useSelector((state: any) => state.vacation.vacations);
 	const isLoading = useSelector((state: any) => state.vacation.isLoading);
 	const user = useSelector((state: any) => state.auth.user);
+	const errorMsg = useSelector((state: any) => state.error.msg);
+	const errorStatus = useSelector((state: any) => state.error.status);
 	const dispatch = useDispatch();
 
+	if (errorMsg) return <VacError errorMsg={errorMsg} errorStatus={errorStatus} />;
 	if (isLoading) return <VacLoader />;
 	return (
 		<Container className={classes.cardGrid} maxWidth="lg">

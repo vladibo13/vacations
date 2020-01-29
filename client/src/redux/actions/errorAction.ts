@@ -1,9 +1,9 @@
 import Actions from './action.config';
 
-export const returnErrors = (data: object) => {
+export const returnErrors = (msg: string, status: string) => {
 	return {
 		type: Actions.GET_ERRORS,
-		payload: data
+		payload: { msg, status }
 	};
 };
 
