@@ -1,19 +1,21 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getVacationsFiltred, getVacations } from '../../redux/actions/vacationsAction';
+import { getVacationsFiltred } from '../../redux/actions/vacationsAction';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import VacMainItem from '../vac-main-item';
 import { IVacation } from '../../types/index';
-import mainAxios from '../../axios/mainAxios';
 import VacLoader from '../vac-loader';
 import Typography from '@material-ui/core/Typography';
 import VacError from '../vac-error';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
+		root: {
+			minHeight: '82vh'
+		},
 		card: {
 			maxWidth: 500
 		},
@@ -47,24 +49,18 @@ const useStyles = makeStyles((theme: Theme) =>
 const VacMain: React.FC = () => {
 	useEffect(() => {
 		const initReq = async () => {
-			try {
-				// await dispatch(getVacations());
-
-				await dispatch(getVacationsFiltred(user.id));
-			} catch (e) {
-				console.log(e);
-			}
+			await dispatch(getVacationsFiltred(user.id));
 		};
 		initReq();
 	}, []);
 
+	const dispatch = useDispatch();
 	const classes = useStyles();
 	const vacations = useSelector((state: any) => state.vacation.vacations);
 	const isLoading = useSelector((state: any) => state.vacation.isLoading);
 	const user = useSelector((state: any) => state.auth.user);
 	const errorMsg = useSelector((state: any) => state.error.msg);
 	const errorStatus = useSelector((state: any) => state.error.status);
-	const dispatch = useDispatch();
 
 	if (errorMsg) return <VacError errorMsg={errorMsg} errorStatus={errorStatus} />;
 	if (isLoading) return <VacLoader />;

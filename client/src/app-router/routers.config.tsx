@@ -7,7 +7,6 @@ import VacAdmin from '../components/vac-admin';
 import VacChart from '../components/vac-chart';
 import { withAuth } from '../hoc/auth';
 import { Redirect } from 'react-router-dom';
-// { exact: true, isVisible: true, title: 'Log In', path: '/login', component: VacLogin }
 
 export const routes = [
 	{ exact: true, isVisible: true, title: 'Home', path: '/', component: () => <Redirect to="/register" /> },

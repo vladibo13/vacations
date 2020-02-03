@@ -42,7 +42,6 @@ export default function vacationReducer(state = initialState, action: any) {
 		}
 
 		case Actions.DELETE_VACATION: {
-			console.log('PAYLOAD = ', action.payload);
 			return {
 				...state,
 				msgVacation: action.payload.msg,

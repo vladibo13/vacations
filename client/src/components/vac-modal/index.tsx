@@ -86,13 +86,9 @@ const VacModal: React.FC<any> = (props: any) => {
 	const { getVacations } = props;
 	const [ formData, setFormData ] = useCustomForm(initialState);
 	const handleClose = async () => {
-		try {
-			await dispatch(addVacation(formData));
-			// await dispatch(getVacations());
-			setOpen(false);
-		} catch (ex) {
-			console.log(ex);
-		}
+		await dispatch(addVacation(formData));
+
+		setOpen(false);
 	};
 	const handleCloseNoData = () => {
 		setOpen(false);

@@ -9,7 +9,6 @@ const initialState = {
 export default function vacationReducer(state = initialState, action: any) {
 	switch (action.type) {
 		case Actions.GET_CHART_DATA: {
-			console.log(action.payload);
 			return {
 				...state,
 				vacationsData: action.payload.destinations,

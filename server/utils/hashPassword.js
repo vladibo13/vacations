@@ -7,8 +7,6 @@ async function hashPassword(plainText) {
 }
 
 async function compareHashPassword(plainText, hash) {
-	console.log(plainText);
-	console.log(hash);
 	const isMatch = await bcrypt.compare(plainText, hash);
 	return isMatch;
 }

@@ -8,7 +8,7 @@ import {
 	unfollowVacationService,
 	followVacationService
 } from '../service';
-import { returnErrors, clearErrors } from './errorAction';
+import { returnErrors } from './errorAction';
 
 export const getVacations = () => {
 	return async (dispatch: Function) => {

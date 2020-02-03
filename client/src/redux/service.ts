@@ -1,4 +1,3 @@
-import axios from 'axios';
 import mainAxios from '../axios/mainAxios';
 
 export const registerUserService = async (user: any) => {

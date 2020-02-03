@@ -24,7 +24,7 @@ async function login(req, res, next) {
 
 	try {
 		const user = await isUserExist(email);
-		if (!user) return res.status(400).json({ error: 'user not exist' });
+		if (!user) return res.status(400).json({ msg: 'user not exist' });
 		const hashedPassword = await getHashedPassword(user.email);
 		const passwordCheck = await compareHashPassword(password, hashedPassword.password);
 		if (!passwordCheck) return res.status(400).json({ msg: 'password incorrect' });

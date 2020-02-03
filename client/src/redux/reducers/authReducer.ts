@@ -40,18 +40,13 @@ export default function authReducer(state = initialState, action: any) {
 		}
 
 		case Actions.AUTH_ERROR: {
-			console.log('from error reducer payload ', action.payload);
 			return {
 				...state,
-				msg: '',
-				isRegistred: false,
-				error: action.payload
+				msg: action.payload.msg
 			};
 		}
 
 		case Actions.REGISTER_USER: {
-			console.log('register user reducer...');
-			console.log('from reducer payload ', action.payload);
 			return {
 				...state,
 				isRegistred: true,
@@ -73,7 +68,6 @@ export default function authReducer(state = initialState, action: any) {
 		}
 
 		case Actions.VERIFY_USER: {
-			console.log(action.payload.status);
 			return {
 				...state,
 				isLoading: false,

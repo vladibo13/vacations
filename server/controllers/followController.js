@@ -38,11 +38,3 @@ async function unfollow(req, res, next) {
 }
 
 module.exports = { follow, unfollow };
-// const express = require('express');
-// const router = express.Router();
-// const { followalidation } = require('../validations/followValidation');
-// const followController = require('../controllers/followController');
-
-// router.route('/').post(followalidation, followController.follow).delete(followalidation, followController.unfollow);
-
-// module.exports = router;

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		paper: {
 			position: 'absolute',
-			width: 400,
+			width: 600,
 			backgroundColor: theme.palette.background.paper,
 			border: '1px solid #000',
 			boxShadow: theme.shadows[5],
@@ -103,13 +103,8 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 
 	//modal functions
 	const handleClose = async () => {
-		try {
-			// const data = await mainAxios.put('/vacations', { ...formData });
-			await dispatch(updateVacation(formData));
-			// await dispatch(getVacations());
-		} catch (ex) {
-			console.log(ex);
-		}
+		await dispatch(updateVacation(formData));
+
 		setOpenEdit(false);
 	};
 
@@ -148,6 +143,9 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 							autoComplete="description"
 							onChange={setFormData}
 							value={formData.description}
+							rows={4}
+							rowsMax={8}
+							multiline={true}
 						/>
 						<TextField
 							variant="outlined"

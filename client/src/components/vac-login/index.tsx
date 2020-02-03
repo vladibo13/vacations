@@ -11,14 +11,14 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		height: '85vh'
+		height: '90vh'
 	},
 	image: {
-		backgroundImage: 'url(https://source.unsplash.com/random)',
+		backgroundImage:
+			'url(https://images.unsplash.com/photo-1440778303588-435521a205bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80)',
 		backgroundRepeat: 'no-repeat',
 		backgroundColor: theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
 		backgroundSize: 'cover',
@@ -45,21 +45,12 @@ const useStyles = makeStyles((theme) => ({
 
 const VacLogin: React.FC = (props: any) => {
 	const initialState = { email: '', password: '' };
-	//hooks
 	const classes = useStyles();
 	const [ formData, setFormData ] = useCustomForm(initialState);
-	//redux state
 	const error = useSelector((state: any) => state.auth.error);
-	// const token = useSelector((state: any) => state.auth.token);
-	const token = localStorage.getItem('token');
-	//redux dispatch
 	const dispatch = useDispatch();
 	const handleLogIn = async () => {
-		try {
-			await dispatch(loginUser(formData, props.history));
-		} catch (ex) {
-			console.log(ex);
-		}
+		await dispatch(loginUser(formData, props.history));
 	};
 
 	return (
