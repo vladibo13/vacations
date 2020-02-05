@@ -61,7 +61,7 @@ const VacMain: React.FC = () => {
 	const user = useSelector((state: any) => state.auth.user);
 	const errorMsg = useSelector((state: any) => state.error.msg);
 	const errorStatus = useSelector((state: any) => state.error.status);
-
+	console.log(vacations);
 	if (errorMsg) return <VacError errorMsg={errorMsg} errorStatus={errorStatus} />;
 	if (isLoading) return <VacLoader />;
 	return (

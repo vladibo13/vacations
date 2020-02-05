@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -48,6 +48,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 // user
 const VacMainItem: React.FC<IVacation> = (props: IVacation) => {
+	useEffect(() => {
+		const initReq = async () => {
+			if (isSelected) setChecked(true);
+		};
+		initReq();
+	}, []);
+
 	const classes = useStyles();
 	const { id, destination, from_date, to_date, picture, description, all_followers, cost, isSelected } = props;
 	const [ checked, setChecked ] = useState<boolean>(false);
