@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		height: '90vh'
+		height: '87vh'
 	},
 	image: {
 		backgroundImage:
@@ -47,12 +47,12 @@ const VacLogin: React.FC = (props: any) => {
 	const initialState = { email: '', password: '' };
 	const classes = useStyles();
 	const [ formData, setFormData ] = useCustomForm(initialState);
-	const error = useSelector((state: any) => state.auth.error);
+	const msg = useSelector((state: any) => state.auth.msg);
 	const dispatch = useDispatch();
 	const handleLogIn = async () => {
 		await dispatch(loginUser(formData, props.history));
 	};
-
+	console.log('MSG = ', msg);
 	return (
 		<Grid container component="main" className={classes.root}>
 			<Grid item xs={false} sm={false} md={7} className={classes.image} />
@@ -89,7 +89,7 @@ const VacLogin: React.FC = (props: any) => {
 							autoComplete="current-password"
 							onChange={setFormData}
 						/>
-						<Typography color="error">{error}</Typography>
+						<Typography color="error">{msg}</Typography>
 						<Button
 							onClick={handleLogIn}
 							type="button"

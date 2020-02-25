@@ -42,7 +42,7 @@ export default function authReducer(state = initialState, action: any) {
 		case Actions.AUTH_ERROR: {
 			return {
 				...state,
-				msg: action.payload.msg
+				msg: 'wrong credentials'
 			};
 		}
 

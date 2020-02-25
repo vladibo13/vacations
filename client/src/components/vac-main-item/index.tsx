@@ -48,6 +48,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 // user
 const VacMainItem: React.FC<IVacation> = (props: IVacation) => {
+	const classes = useStyles();
+	const [ checked, setChecked ] = useState<boolean>(false);
+	const user = useSelector((state: any) => state.auth.user);
+	const dispatch = useDispatch();
+
 	useEffect(() => {
 		const initReq = async () => {
 			if (isSelected) setChecked(true);
@@ -55,17 +60,13 @@ const VacMainItem: React.FC<IVacation> = (props: IVacation) => {
 		initReq();
 	}, []);
 
-	const classes = useStyles();
 	const { id, destination, from_date, to_date, picture, description, all_followers, cost, isSelected } = props;
-	const [ checked, setChecked ] = useState<boolean>(false);
-	const user = useSelector((state: any) => state.auth.user);
-	const dispatch = useDispatch();
 
 	const toggleChecked = async () => {
 		if (!checked) {
-			await dispatch(followVacation(user.id, id));
+			dispatch(followVacation(user.id, id));
 		} else {
-			await dispatch(unfollowVacation(user.id, id));
+			dispatch(unfollowVacation(user.id, id));
 		}
 		setChecked((prev: boolean) => !prev);
 	};

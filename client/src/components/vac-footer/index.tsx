@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 		minHeight: '2vh'
 	},
 	footer: {
-		padding: theme.spacing(1, 2),
+		padding: theme.spacing(0, 0),
 		marginTop: 'auto',
 		backgroundColor: indigo[500],
 		color: '#fff'

@@ -37,8 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const VacRegister: React.FC = (props: any) => {
-	const errorMsg = useSelector((state: any) => state.error.msg);
-	const errorStatus = useSelector((state: any) => state.error.status);
+	const msg = useSelector((state: any) => state.auth.msg);
 	const initialState = { firstname: '', lastname: '', email: '', password: '' };
 	const [ formData, setFormData ] = useCustomForm(initialState);
 
@@ -111,9 +110,7 @@ const VacRegister: React.FC = (props: any) => {
 							/>
 						</Grid>
 					</Grid>
-					<Typography color="error">
-						{errorMsg} - {errorStatus}
-					</Typography>
+					<Typography color="error">{msg}</Typography>
 					<Button
 						onClick={handleRegister}
 						type="button"

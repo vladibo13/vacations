@@ -10,6 +10,8 @@ import { IVacation } from '../../types/index';
 import VacLoader from '../vac-loader';
 import Typography from '@material-ui/core/Typography';
 import VacError from '../vac-error';
+import ReplayIcon from '@material-ui/icons/Replay';
+import Fab from '@material-ui/core/Fab';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -41,19 +43,14 @@ const useStyles = makeStyles((theme: Theme) =>
 			backgroundColor: red[500]
 		},
 		heading: {
-			marginBottom: '3rem'
+			marginBottom: '3rem',
+			letterSpacing: '5px',
+			fontWeight: 300
 		}
 	})
 );
 
 const VacMain: React.FC = () => {
-	useEffect(() => {
-		const initReq = async () => {
-			await dispatch(getVacationsFiltred(user.id));
-		};
-		initReq();
-	}, []);
-
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const vacations = useSelector((state: any) => state.vacation.vacations);
@@ -61,12 +58,27 @@ const VacMain: React.FC = () => {
 	const user = useSelector((state: any) => state.auth.user);
 	const errorMsg = useSelector((state: any) => state.error.msg);
 	const errorStatus = useSelector((state: any) => state.error.status);
-	console.log(vacations);
+
+	useEffect(() => {
+		const initReq = async () => {
+			dispatch(getVacationsFiltred(user.id));
+		};
+		initReq();
+	}, []);
+
+	const updateVacations = async () => {
+		dispatch(getVacationsFiltred(user.id));
+	};
+
 	if (errorMsg) return <VacError errorMsg={errorMsg} errorStatus={errorStatus} />;
 	if (isLoading) return <VacLoader />;
 	return (
 		<Container className={classes.cardGrid} maxWidth="lg">
-			<Typography className={classes.heading} variant="h5" component="h5" gutterBottom align="center">
+			<Fab onClick={updateVacations}>
+				<ReplayIcon />
+			</Fab>
+
+			<Typography className={classes.heading} variant="h4" component="h4" gutterBottom align="center">
 				Welcome To Vacation User: {user.firstname} {user.lastname}
 			</Typography>
 			<Grid container spacing={4}>

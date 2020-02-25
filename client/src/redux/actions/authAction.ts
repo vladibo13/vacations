@@ -16,32 +16,34 @@ export const registerUser = (user: object, history: Array<any>) => {
 				return;
 			}
 		} catch (ex) {
-			dispatch(returnErrors(ex.response.statusText, ex.response.status));
+			dispatch({ type: Actions.AUTH_ERROR });
 		}
 	};
 };
 
 export const loginUser = (user: object, history: Array<any>) => {
-	return async (dispatch: any) => {
+	return async (dispatch: Function) => {
 		try {
 			const data = await loginUserService(user);
+
 			dispatch({
 				type: Actions.LOGIN_USER,
 				payload: data
 			});
+
 			const token = localStorage.getItem('token');
 			if (data.msg === 'redirect' && token && data.redirect) {
 				history.push('/main');
 				return;
 			}
 		} catch (ex) {
-			dispatch(returnErrors(ex.response.statusText, ex.response.status));
+			dispatch({ type: Actions.AUTH_ERROR });
 		}
 	};
 };
 
 export const logoutUser = () => {
-	return async (dispatch: any) => {
+	return async (dispatch: Function) => {
 		try {
 			dispatch({ type: Actions.LOGOUT_USER });
 			dispatch(clearErrors());

@@ -20,6 +20,7 @@ function registerValidation(req, res, next) {
 
 function loginValidation(req, res, next) {
 	const { error } = userSchemaLogin.validate(req.body);
+
 	if (error) return res.status(400).json({ msg: error.details[0].message });
 	next();
 }

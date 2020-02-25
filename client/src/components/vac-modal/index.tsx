@@ -83,7 +83,7 @@ const VacModal: React.FC<any> = (props: any) => {
 		all_followers: 0,
 		cost: 0
 	};
-	const { getVacations } = props;
+
 	const [ formData, setFormData ] = useCustomForm(initialState);
 	const handleClose = async () => {
 		await dispatch(addVacation(formData));

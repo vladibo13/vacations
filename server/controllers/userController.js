@@ -1,8 +1,5 @@
-const express = require('express');
-const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { saveUser, isUserExist, getHashedPassword } = require('../utils/queryHelpers');
-const { registerValidation, loginValidation } = require('../validations/userValidation');
 const { hashPassword, compareHashPassword } = require('../utils/hashPassword');
 const { getJwt } = require('../utils/createJWT');
 

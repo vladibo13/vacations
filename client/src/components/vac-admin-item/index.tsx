@@ -80,7 +80,7 @@ function getModalStyle() {
 }
 
 const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
-	const { getVacations, destination, description, picture, cost, all_followers, id, from_date, to_date } = props;
+	const { destination, description, picture, cost, all_followers, id, from_date, to_date } = props;
 	//init state for editing
 	const initialState = {
 		destination,
@@ -103,8 +103,7 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 
 	//modal functions
 	const handleClose = async () => {
-		await dispatch(updateVacation(formData));
-
+		dispatch(updateVacation(formData));
 		setOpenEdit(false);
 	};
 
@@ -112,8 +111,7 @@ const VacAdminItem: React.FC<IVacation> = (props: IVacation) => {
 		setOpenEdit(true);
 	};
 	const handleDelete = async (vacationID: number) => {
-		await dispatch(deleteVacation(vacationID));
-		// await dispatch(getVacations());
+		dispatch(deleteVacation(vacationID));
 	};
 	const handleEditCloseNoData = () => {
 		setOpenEdit(false);

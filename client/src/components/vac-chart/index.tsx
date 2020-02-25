@@ -10,13 +10,17 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
 	root: {
 		margin: '5rem 0'
+	},
+	heading: {
+		fontWeight: 300,
+		letterSpacing: '5px'
 	}
 }));
 
 const VacChart: React.FC = (props: any) => {
 	useEffect(() => {
 		const initReq = async () => {
-			await dispatch(getChart());
+			dispatch(getChart());
 		};
 		initReq();
 	}, []);
@@ -46,7 +50,7 @@ const VacChart: React.FC = (props: any) => {
 	if (!vacationsData || !followersData) return <VacLoader />;
 	return (
 		<div className={classes.root}>
-			<Typography variant="h3" component="h3" gutterBottom align="center">
+			<Typography className={classes.heading} variant="h4" component="h4" gutterBottom align="center">
 				Chart Page
 			</Typography>
 			<Typography variant="h6" component="h6" gutterBottom align="center">
@@ -55,7 +59,7 @@ const VacChart: React.FC = (props: any) => {
 			<Bar
 				data={data}
 				width={100}
-				height={230}
+				height={305}
 				options={{
 					maintainAspectRatio: false
 				}}

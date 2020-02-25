@@ -27,11 +27,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const VacAdmin: React.FC<IVacation> = () => {
 	useEffect(() => {
-		const initReq = async () => {
-			await dispatch(getVacations());
+		const initReq = () => {
+			dispatch(getVacations());
 		};
 		initReq();
 	}, []);
+
 	const dispatch = useDispatch();
 	const vacations = useSelector((state: any) => state.vacation.vacations);
 	const isLoading = useSelector((state: any) => state.vacation.isLoading);
@@ -46,11 +47,11 @@ const VacAdmin: React.FC<IVacation> = () => {
 			{/* {user.role !== admin && <Redirect to="/login" />} */}
 
 			<Container className={classes.cardGrid} maxWidth="lg">
-				<Typography className={classes.heading} variant="h3" component="h3" gutterBottom align="center">
+				<VacModal />
+				<Typography className={classes.heading} variant="h4" component="h4" gutterBottom align="center">
 					Welcome Back Admin
 				</Typography>
-				<VacModal getVacations={getVacations} />
-				<h5>Add Vacation</h5>
+
 				<Grid container spacing={4}>
 					{vacations.map((vac: IVacation) => (
 						<VacAdminItem getVacations={getVacations} key={vac.id} {...vac} />
